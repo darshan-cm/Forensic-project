@@ -1,0 +1,6 @@
+pywin32==311
+psutil==7.0.0
+watchdog==6.0.0
+Flask==3.1.2
+WMI==1.5.1
+python-dateutil==2.9.0.post0
