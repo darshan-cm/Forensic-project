@@ -1,0 +1,501 @@
+Time,Source,Event ID,Action,Application,Details
+2026-08-13 11:22:43,Process Monitor,4688,Application Opened,WhatsApp.Root.exe,PID=17416 | C:\Program Files\WindowsApps\5319275A.WhatsAppDesktop_2.2628.101.0_x64__cv1g1gvanyjgm\WhatsApp.Root.exe
+2026-08-13 11:22:42,Process Monitor,4689,Application Closed,sppsvc.exe,PID=13464
+2026-08-13 11:22:38,Process Monitor,4689,Application Closed,reg.exe,PID=9280
+2026-08-13 11:22:37,Process Monitor,4688,Application Opened,reg.exe,PID=9280 | C:\Windows\System32\reg.exe
+2026-08-13 11:22:32,Process Monitor,4689,Application Closed,Notepad.exe,PID=18060
+2026-08-13 11:22:15,Process Monitor,4689,Application Closed,conhost.exe,PID=2036
+2026-08-13 11:22:15,Process Monitor,4689,Application Closed,cmd.exe,PID=8548
+2026-08-13 11:22:15,Process Monitor,4689,Application Closed,powercfg.exe,PID=21792
+2026-08-13 11:22:13,Process Monitor,4689,Application Closed,SearchProtocolHost.exe,PID=19808
+2026-08-13 11:22:07,Process Monitor,4689,Application Closed,taskhostw.exe,PID=23204
+2026-08-13 11:22:05,Process Monitor,4688,Application Opened,taskhostw.exe,PID=23204 | C:\Windows\System32\taskhostw.exe
+2026-08-13 11:22:04,Process Monitor,4689,Application Closed,WmiApSrv.exe,PID=8132
+2026-08-13 11:22:04,Process Monitor,4689,Application Closed,WMIADAP.exe,PID=4068
+2026-08-13 11:22:02,Process Monitor,4689,Application Closed,SearchFilterHost.exe,PID=21188
+2026-08-13 11:22:02,Process Monitor,4688,Application Opened,conhost.exe,PID=2036 | C:\Windows\System32\conhost.exe
+2026-08-13 11:22:02,Process Monitor,4688,Application Opened,cmd.exe,PID=8548 | C:\Windows\System32\cmd.exe
+2026-08-13 11:22:02,Process Monitor,4688,Application Opened,powercfg.exe,PID=21792 | C:\Windows\System32\powercfg.exe
+2026-08-13 11:22:00,Process Monitor,4689,Application Closed,conhost.exe,PID=20500
+2026-08-13 11:22:00,Process Monitor,4689,Application Closed,TouchpointGpuInfo.exe,PID=4440
+2026-08-13 11:21:59,Process Monitor,4688,Application Opened,conhost.exe,PID=20500 | C:\Windows\System32\conhost.exe
+2026-08-13 11:21:56,Process Monitor,4689,Application Closed,postgres.exe,PID=15264
+2026-08-13 11:21:56,Active Window,WINDOW_CHANGE,Window Changed,ForensicGuard,User switched active window
+2026-08-13 11:21:55,Process Monitor,4688,Application Opened,postgres.exe,PID=15264 | C:\Program Files\PostgreSQL\18\bin\postgres.exe
+2026-08-13 11:21:53,Process Monitor,4688,Application Opened,python.exe,PID=21120 | C:\Users\rakhe\AppData\Local\Programs\Python\Python311\python.exe
+2026-08-13 11:21:53,Process Monitor,4688,Application Opened,python.exe,PID=5728 | C:\project\p2\.venv\Scripts\python.exe
+2026-08-13 11:21:51,Process Monitor,4689,Application Closed,taskhostw.exe,PID=5768
+2026-08-13 11:21:45,Process Monitor,4689,Application Closed,RuntimeBroker.exe,PID=12196
+2026-08-13 11:21:44,Active Window,WINDOW_CHANGE,Window Changed,database.py - p2 - Visual Studio Code,User switched active window
+2026-08-13 11:20:59,Active Window,WINDOW_CHANGE,Window Changed,security_monitor.py - p2 - Visual Studio Code,User switched active window
+2026-08-13 11:20:59,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=3460
+2026-08-13 11:20:59,Process Monitor,4689,Application Closed,mscopilot.exe,PID=12240
+2026-08-13 11:20:59,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=15072 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:20:58,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=22912
+2026-08-13 11:20:58,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=3460 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:20:58,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=23848 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:20:56,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\Downloads\Hack-mandya\symptom analysis\Testing.csv,File content changed
+2026-08-13 11:20:56,Process Monitor,4689,Application Closed,OneDriveStandaloneUpdater.exe,PID=3956
+2026-08-13 11:20:56,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=24544
+2026-08-13 11:20:55,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=22328
+2026-08-13 11:20:55,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=22912 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:20:55,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Pictures\my-results.xlsx,File content changed
+2026-08-13 11:20:54,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=24544 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:20:53,Process Monitor,4688,Application Opened,mscopilot.exe,PID=12240 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:53,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Pictures\WhatsApp Unknown 2026-08-12 at 20.03.49.zip,File content changed
+2026-08-13 11:20:52,Process Monitor,4688,Application Opened,mscopilot.exe,PID=21824 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:51,Process Monitor,4688,Application Opened,mscopilot.exe,PID=12860 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:49,Process Monitor,4689,Application Closed,MoUsoCoreWorker.exe,PID=5932
+2026-08-13 11:20:49,Process Monitor,4689,Application Closed,mc-update.exe,PID=4504
+2026-08-13 11:20:48,Process Monitor,4689,Application Closed,svchost.exe,PID=5484
+2026-08-13 11:20:48,Process Monitor,4688,Application Opened,svchost.exe,PID=4340 | C:\Windows\System32\svchost.exe
+2026-08-13 11:20:47,Process Monitor,4689,Application Closed,WmiPrvSE.exe,PID=6932
+2026-08-13 11:20:47,Process Monitor,4689,Application Closed,SoftLandingTask.exe,PID=20560
+2026-08-13 11:20:47,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=24044
+2026-08-13 11:20:47,Process Monitor,4689,Application Closed,mscopilot.exe,PID=16748
+2026-08-13 11:20:47,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=11396
+2026-08-13 11:20:47,Process Monitor,4689,Application Closed,mscopilot.exe,PID=12800
+2026-08-13 11:20:47,Process Monitor,4688,Application Opened,mscopilot.exe,PID=348 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:47,Process Monitor,4688,Application Opened,mscopilot.exe,PID=22604 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:47,Process Monitor,4688,Application Opened,mscopilot.exe,PID=24188 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:47,Active Window,WINDOW_CHANGE,Window Changed,Copilot,User switched active window
+2026-08-13 11:20:46,Process Monitor,4689,Application Closed,opushutil.exe,PID=7120
+2026-08-13 11:20:44,Process Monitor,4688,Application Opened,mscopilot.exe,PID=16748 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:44,Process Monitor,4688,Application Opened,mscopilot.exe,PID=12800 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:43,Process Monitor,4689,Application Closed,smartscreen.exe,PID=21388
+2026-08-13 11:20:43,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=13968
+2026-08-13 11:20:43,Process Monitor,4688,Application Opened,identity_helper.exe,PID=21564 | C:\Program Files (x86)\Microsoft\Copilot\Application\151.0.4129.72\identity_helper.exe
+2026-08-13 11:20:42,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=4156
+2026-08-13 11:20:42,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=21016
+2026-08-13 11:20:42,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=16244
+2026-08-13 11:20:42,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=11316
+2026-08-13 11:20:42,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=17428
+2026-08-13 11:20:42,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=24392
+2026-08-13 11:20:41,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=24300
+2026-08-13 11:20:40,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=16880
+2026-08-13 11:20:38,Process Monitor,4689,Application Closed,ActionsServer.exe,PID=2576
+2026-08-13 11:20:37,Process Monitor,4689,Application Closed,git.exe,PID=18236
+2026-08-13 11:20:37,Process Monitor,4689,Application Closed,conhost.exe,PID=23412
+2026-08-13 11:20:37,Process Monitor,4689,Application Closed,git.exe,PID=19980
+2026-08-13 11:20:37,Process Monitor,4689,Application Closed,conhost.exe,PID=8936
+2026-08-13 11:20:37,Process Monitor,4689,Application Closed,mscopilot.exe,PID=21572
+2026-08-13 11:20:37,Process Monitor,4689,Application Closed,git.exe,PID=18304
+2026-08-13 11:20:37,Process Monitor,4689,Application Closed,git.exe,PID=18720
+2026-08-13 11:20:36,Process Monitor,4688,Application Opened,git.exe,PID=18236 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:20:36,Process Monitor,4688,Application Opened,conhost.exe,PID=23412 | C:\Windows\System32\conhost.exe
+2026-08-13 11:20:36,Process Monitor,4688,Application Opened,git.exe,PID=19980 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:20:36,Process Monitor,4688,Application Opened,conhost.exe,PID=8936 | C:\Windows\System32\conhost.exe
+2026-08-13 11:20:36,Process Monitor,4688,Application Opened,git.exe,PID=18304 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:20:36,Process Monitor,4688,Application Opened,git.exe,PID=18720 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:20:35,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=18948
+2026-08-13 11:20:35,Process Monitor,4689,Application Closed,wermgr.exe,PID=24264
+2026-08-13 11:20:35,Process Monitor,4688,Application Opened,msedgewebview2.exe,PID=13968 | C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.78\msedgewebview2.exe
+2026-08-13 11:20:34,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=1988
+2026-08-13 11:20:34,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=6712
+2026-08-13 11:20:34,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=21824
+2026-08-13 11:20:34,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=22328 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:20:33,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=6712 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:20:32,Process Monitor,4689,Application Closed,OfficeC2RClient.exe,PID=24236
+2026-08-13 11:20:32,Process Monitor,4689,Application Closed,OfficeC2RClient.exe,PID=23784
+2026-08-13 11:20:31,Process Monitor,4688,Application Opened,mscopilot.exe,PID=22708 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:30,Process Monitor,4689,Application Closed,mscopilot.exe,PID=21376
+2026-08-13 11:20:30,Process Monitor,4689,Application Closed,elevation_service.exe,PID=18548
+2026-08-13 11:20:30,Process Monitor,4689,Application Closed,mscopilot.exe,PID=24188
+2026-08-13 11:20:30,Process Monitor,4688,Application Opened,mscopilot.exe,PID=3960 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:30,Process Monitor,4688,Application Opened,mscopilot.exe,PID=15156 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:29,Process Monitor,4688,Application Opened,mscopilot.exe,PID=3664 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:29,Process Monitor,4688,Application Opened,mscopilot.exe,PID=13604 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:29,Process Monitor,4688,Application Opened,elevation_service.exe,PID=4864 | C:\Program Files (x86)\Microsoft\Copilot\Application\151.0.4129.72\elevation_service.exe
+2026-08-13 11:20:28,Process Monitor,4689,Application Closed,mscopilot.exe,PID=15428
+2026-08-13 11:20:28,Process Monitor,4689,Application Closed,mscopilot.exe,PID=21516
+2026-08-13 11:20:28,Process Monitor,4689,Application Closed,mscopilot.exe,PID=20164
+2026-08-13 11:20:28,Process Monitor,4689,Application Closed,mscopilot.exe,PID=14776
+2026-08-13 11:20:28,Process Monitor,4688,Application Opened,sppsvc.exe,PID=13464 | C:\Windows\System32\sppsvc.exe
+2026-08-13 11:20:26,Process Monitor,4689,Application Closed,git.exe,PID=20792
+2026-08-13 11:20:26,Process Monitor,4689,Application Closed,conhost.exe,PID=24560
+2026-08-13 11:20:26,Process Monitor,4689,Application Closed,conhost.exe,PID=13676
+2026-08-13 11:20:26,Process Monitor,4689,Application Closed,git.exe,PID=21028
+2026-08-13 11:20:26,Process Monitor,4689,Application Closed,git.exe,PID=22560
+2026-08-13 11:20:25,Process Monitor,4688,Application Opened,git.exe,PID=20792 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:20:25,Process Monitor,4688,Application Opened,conhost.exe,PID=24560 | C:\Windows\System32\conhost.exe
+2026-08-13 11:20:25,Process Monitor,4688,Application Opened,conhost.exe,PID=13676 | C:\Windows\System32\conhost.exe
+2026-08-13 11:20:25,Process Monitor,4688,Application Opened,git.exe,PID=21028 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:20:25,Active Window,WINDOW_CHANGE,Window Changed,security_monitor.py - p2 - Visual Studio Code,User switched active window
+2026-08-13 11:20:25,Process Monitor,4688,Application Opened,git.exe,PID=22560 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:20:21,Active Window,WINDOW_CHANGE,Window Changed,Copilot,User switched active window
+2026-08-13 11:20:20,Process Monitor,4688,Application Opened,setup.exe,PID=6048 | C:\Program Files (x86)\BraveSoftware\Update\Install\{5A6FAD1C-12A3-4164-905A-386F49EE152F}\CR_58CCE.tmp\setup.exe
+2026-08-13 11:20:20,Process Monitor,4688,Application Opened,setup.exe,PID=23696 | C:\Program Files (x86)\BraveSoftware\Update\Install\{5A6FAD1C-12A3-4164-905A-386F49EE152F}\CR_58CCE.tmp\setup.exe
+2026-08-13 11:20:19,Process Monitor,4689,Application Closed,git.exe,PID=18668
+2026-08-13 11:20:19,Process Monitor,4689,Application Closed,setup.exe,PID=2628
+2026-08-13 11:20:19,Process Monitor,4689,Application Closed,conhost.exe,PID=22532
+2026-08-13 11:20:19,Process Monitor,4689,Application Closed,git.exe,PID=10944
+2026-08-13 11:20:19,Process Monitor,4689,Application Closed,setup.exe,PID=13728
+2026-08-13 11:20:18,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=3660
+2026-08-13 11:20:18,Process Monitor,4688,Application Opened,git.exe,PID=18668 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:20:18,Process Monitor,4688,Application Opened,conhost.exe,PID=22532 | C:\Windows\System32\conhost.exe
+2026-08-13 11:20:18,Process Monitor,4688,Application Opened,git.exe,PID=10944 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:20:17,Process Monitor,4689,Application Closed,RuntimeBroker.exe,PID=15568
+2026-08-13 11:20:17,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=18948 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:20:13,Process Monitor,4689,Application Closed,conhost.exe,PID=19096
+2026-08-13 11:20:13,Process Monitor,4689,Application Closed,conhost.exe,PID=10836
+2026-08-13 11:20:13,Process Monitor,4689,Application Closed,git.exe,PID=16620
+2026-08-13 11:20:13,Process Monitor,4689,Application Closed,git.exe,PID=6120
+2026-08-13 11:20:13,Process Monitor,4689,Application Closed,git.exe,PID=18888
+2026-08-13 11:20:12,Process Monitor,4688,Application Opened,conhost.exe,PID=19096 | C:\Windows\System32\conhost.exe
+2026-08-13 11:20:12,Process Monitor,4688,Application Opened,conhost.exe,PID=10836 | C:\Windows\System32\conhost.exe
+2026-08-13 11:20:12,Process Monitor,4688,Application Opened,git.exe,PID=16620 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:20:12,Process Monitor,4688,Application Opened,git.exe,PID=6120 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:20:12,Process Monitor,4688,Application Opened,git.exe,PID=18888 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:20:11,Process Monitor,4688,Application Opened,setup.exe,PID=2628 | C:\Program Files\BraveSoftware\Brave-Browser\Application\151.1.93.134\Installer\setup.exe
+2026-08-13 11:20:11,Process Monitor,4688,Application Opened,mscopilot.exe,PID=24188 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:10,Active Window,WINDOW_CHANGE,Window Changed,security_monitor.py - p2 - Visual Studio Code,User switched active window
+2026-08-13 11:20:10,Process Monitor,4688,Application Opened,mc-neo-host.exe,PID=16772 | C:\ProgramData\McAfee\WPS\content\neo-core\26.7.0.146\mc-neo-host.exe
+2026-08-13 11:20:10,Process Monitor,4688,Application Opened,setup.exe,PID=13728 | C:\Program Files\BraveSoftware\Brave-Browser\Application\151.1.93.134\Installer\setup.exe
+2026-08-13 11:20:09,Active Window,WINDOW_CHANGE,Window Changed,Copilot,User switched active window
+2026-08-13 11:20:08,Process Monitor,4689,Application Closed,mscopilot.exe,PID=12964
+2026-08-13 11:20:08,Process Monitor,4688,Application Opened,mscopilot.exe,PID=15428 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:08,Active Window,WINDOW_CHANGE,Window Changed,*==================DATA SCIENCE===== - Notepad,User switched active window
+2026-08-13 11:20:08,Process Monitor,4688,Application Opened,brave_installer-delta-x64.exe,PID=17564 | C:\Program Files (x86)\BraveSoftware\Update\Install\{5A6FAD1C-12A3-4164-905A-386F49EE152F}\brave_installer-delta-x64.exe
+2026-08-13 11:20:07,Active Window,WINDOW_CHANGE,Window Changed,Copilot,User switched active window
+2026-08-13 11:20:07,Process Monitor,4689,Application Closed,mc-neo-host.exe,PID=10068
+2026-08-13 11:20:07,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=21124
+2026-08-13 11:20:07,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=3660 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:20:06,Active Window,WINDOW_CHANGE,Window Changed,ML - File Explorer,User switched active window
+2026-08-13 11:20:05,Active Window,WINDOW_CHANGE,Window Changed,Copilot,User switched active window
+2026-08-13 11:20:05,Process Monitor,4688,Application Opened,mscopilot.exe,PID=20164 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:20:02,Process Monitor,4688,Application Opened,BraveUpdate.exe,PID=17160 | C:\Program Files (x86)\BraveSoftware\Update\BraveUpdate.exe
+2026-08-13 11:20:01,Process Monitor,4688,Application Opened,msedgewebview2.exe,PID=24392 | C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.78\msedgewebview2.exe
+2026-08-13 11:19:58,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=6940
+2026-08-13 11:19:58,Process Monitor,4689,Application Closed,UIEOrchestrator.exe,PID=13676
+2026-08-13 11:19:58,Process Monitor,4689,Application Closed,EpicOnlineServicesInstallHelper.exe,PID=4804
+2026-08-13 11:19:58,Process Monitor,4689,Application Closed,UIEOrchestratorStub.exe,PID=23112
+2026-08-13 11:19:58,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=21124 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:57,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=9808
+2026-08-13 11:19:57,File Monitor,FILE_DELETE,File Deleted,C:\Users\rakhe\OneDrive\Documents\ML\BAI602 _modelpaper.pdf,User deleted a file
+2026-08-13 11:19:57,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=6940 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:57,Process Monitor,4688,Application Opened,EpicOnlineServicesInstallHelper.exe,PID=4804 | C:\Program Files (x86)\Epic Games\Epic Online Services\EpicOnlineServicesInstallHelper.exe
+2026-08-13 11:19:56,Process Monitor,4689,Application Closed,rundll32.exe,PID=24548
+2026-08-13 11:19:56,Process Monitor,4689,Application Closed,dllhost.exe,PID=1668
+2026-08-13 11:19:56,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=14036
+2026-08-13 11:19:56,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=9808 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:55,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=24036
+2026-08-13 11:19:55,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=14036 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:54,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=22760
+2026-08-13 11:19:54,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=24036 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:53,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=19864
+2026-08-13 11:19:52,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=22760 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:51,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=1424
+2026-08-13 11:19:51,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=19864 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:50,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=21216
+2026-08-13 11:19:50,Process Monitor,4689,Application Closed,svchost.exe,PID=12132
+2026-08-13 11:19:50,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=6768
+2026-08-13 11:19:50,Process Monitor,4688,Application Opened,dllhost.exe,PID=1668 | C:\Windows\System32\dllhost.exe
+2026-08-13 11:19:50,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=1424 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:49,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=21216 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:48,Process Monitor,4689,Application Closed,HxTsr.exe,PID=24296
+2026-08-13 11:19:48,Process Monitor,4689,Application Closed,taskhostw.exe,PID=13408
+2026-08-13 11:19:47,Process Monitor,4689,Application Closed,taskhostw.exe,PID=4392
+2026-08-13 11:19:47,Process Monitor,4688,Application Opened,svchost.exe,PID=5484 | C:\Windows\System32\svchost.exe
+2026-08-13 11:19:47,Process Monitor,4688,Application Opened,taskhostw.exe,PID=13408 | C:\Windows\System32\taskhostw.exe
+2026-08-13 11:19:46,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Documents\ML\BAI602.pdf,File content changed
+2026-08-13 11:19:46,Process Monitor,4688,Application Opened,mc-update.exe,PID=4504 | C:\Program Files\McAfee\WPS\1.40.161.1\mc-update.exe
+2026-08-13 11:19:45,Process Monitor,4689,Application Closed,taskhostw.exe,PID=23868
+2026-08-13 11:19:45,Process Monitor,4688,Application Opened,SearchFilterHost.exe,PID=21188 | C:\Windows\System32\SearchFilterHost.exe
+2026-08-13 11:19:45,Process Monitor,4688,Application Opened,taskhostw.exe,PID=4392 | C:\Windows\System32\taskhostw.exe
+2026-08-13 11:19:44,Process Monitor,4688,Application Opened,MoUsoCoreWorker.exe,PID=5932 | C:\Windows\UUS\amd64\MoUsoCoreWorker.exe
+2026-08-13 11:19:44,Process Monitor,4688,Application Opened,taskhostw.exe,PID=23868 | C:\Windows\System32\taskhostw.exe
+2026-08-13 11:19:44,Process Monitor,4688,Application Opened,SoftLandingTask.exe,PID=20560 | C:\Windows\SystemApps\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\SoftLandingTask\SoftLandingTask.exe
+2026-08-13 11:19:44,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Documents\ML\BAI602.pdf,File content changed
+2026-08-13 11:19:44,File Monitor,FILE_RENAME,File Renamed,C:\Users\rakhe\OneDrive\Documents\ML\BAI602.pdf,Old Path : C:\Users\rakhe\OneDrive\Documents\ML\BAI602-module-3-textbook.pdf
+2026-08-13 11:19:43,Process Monitor,4689,Application Closed,conhost.exe,PID=23612
+2026-08-13 11:19:43,Process Monitor,4689,Application Closed,BraveCrashHandler.exe,PID=23124
+2026-08-13 11:19:43,Process Monitor,4689,Application Closed,sc.exe,PID=23888
+2026-08-13 11:19:43,Process Monitor,4689,Application Closed,BraveCrashHandler64.exe,PID=3148
+2026-08-13 11:19:43,Process Monitor,4689,Application Closed,BraveUpdate.exe,PID=24004
+2026-08-13 11:19:43,Process Monitor,4688,Application Opened,UIEOrchestrator.exe,PID=13676 | C:\Windows\UUS\amd64\UIEOrchestrator.exe
+2026-08-13 11:19:43,Process Monitor,4688,Application Opened,svchost.exe,PID=12132 | C:\Windows\System32\svchost.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,conhost.exe,PID=23612 | C:\Windows\System32\conhost.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,DeviceCensus.exe,PID=20376 | C:\Windows\System32\DeviceCensus.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,OneDriveStandaloneUpdater.exe,PID=3956 | C:\Program Files\Microsoft OneDrive\OneDriveStandaloneUpdater.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,BraveCrashHandler.exe,PID=23124 | C:\Program Files (x86)\BraveSoftware\Update\1.3.361.151\BraveCrashHandler.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,opushutil.exe,PID=7120 | C:\Program Files\Microsoft Office\root\vfs\ProgramFilesCommonX64\Microsoft Shared\Office16\opushutil.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,ActionsServer.exe,PID=2576 | C:\Program Files\Microsoft Office\root\vfs\ProgramFilesCommonX64\Microsoft Shared\Office16\ActionsServer\ActionsServer.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,sc.exe,PID=23888 | C:\Windows\System32\sc.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,wermgr.exe,PID=24264 | C:\Windows\System32\wermgr.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,OfficeC2RClient.exe,PID=24236 | C:\Program Files\Common Files\microsoft shared\ClickToRun\OfficeC2RClient.exe
+2026-08-13 11:19:42,Process Monitor,4688,Application Opened,BraveCrashHandler64.exe,PID=3148 | C:\Program Files (x86)\BraveSoftware\Update\1.3.361.151\BraveCrashHandler64.exe
+2026-08-13 11:19:41,Process Monitor,4688,Application Opened,taskhostw.exe,PID=5768 | C:\Windows\System32\taskhostw.exe
+2026-08-13 11:19:41,Process Monitor,4688,Application Opened,UIEOrchestratorStub.exe,PID=23112 | C:\Windows\System32\UIEOrchestratorStub.exe
+2026-08-13 11:19:41,Process Monitor,4688,Application Opened,OfficeC2RClient.exe,PID=23784 | C:\Program Files\Common Files\microsoft shared\ClickToRun\OfficeC2RClient.exe
+2026-08-13 11:19:41,Process Monitor,4688,Application Opened,BraveUpdate.exe,PID=23720 | C:\Program Files (x86)\BraveSoftware\Update\BraveUpdate.exe
+2026-08-13 11:19:41,Process Monitor,4688,Application Opened,BraveUpdate.exe,PID=7996 | C:\Program Files (x86)\BraveSoftware\Update\BraveUpdate.exe
+2026-08-13 11:19:41,Process Monitor,4688,Application Opened,rundll32.exe,PID=24548 | C:\Windows\System32\rundll32.exe
+2026-08-13 11:19:41,Process Monitor,4688,Application Opened,BraveUpdate.exe,PID=24004 | C:\Program Files (x86)\BraveSoftware\Update\BraveUpdate.exe
+2026-08-13 11:19:41,Process Monitor,4688,Application Opened,OneDriveStandaloneUpdater.exe,PID=14528 | C:\Program Files\Microsoft OneDrive\OneDriveStandaloneUpdater.exe
+2026-08-13 11:19:40,Process Monitor,4689,Application Closed,RuntimeBroker.exe,PID=24220
+2026-08-13 11:19:39,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=4796 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:19:38,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=8660
+2026-08-13 11:19:37,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=2172
+2026-08-13 11:19:37,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=5608 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:19:36,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=10268
+2026-08-13 11:19:36,Process Monitor,4689,Application Closed,postgres.exe,PID=10604
+2026-08-13 11:19:36,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=6768 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:35,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=2092 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:19:35,Process Monitor,4688,Application Opened,postgres.exe,PID=10604 | C:\Program Files\PostgreSQL\18\bin\postgres.exe
+2026-08-13 11:19:34,Process Monitor,4689,Application Closed,RuntimeBroker.exe,PID=8012
+2026-08-13 11:19:34,Process Monitor,4689,Application Closed,sppsvc.exe,PID=23184
+2026-08-13 11:19:34,Process Monitor,4688,Application Opened,svchost.exe,PID=18488 | C:\Windows\System32\svchost.exe
+2026-08-13 11:19:33,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=23960
+2026-08-13 11:19:33,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=22480 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:19:32,Process Monitor,4689,Application Closed,ms-teamsupdate.exe,PID=22792
+2026-08-13 11:19:31,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=24300 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:19:30,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=2172 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:19:30,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=8660 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:19:30,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=17428 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:19:30,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=16880 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:19:30,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=15568 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:19:30,Process Monitor,4688,Application Opened,HxTsr.exe,PID=24296 | C:\Program Files\WindowsApps\microsoft.windowscommunicationsapps_16005.14326.22342.0_x64__8wekyb3d8bbwe\HxTsr.exe
+2026-08-13 11:19:30,Process Monitor,4688,Application Opened,ms-teamsupdate.exe,PID=22792 | C:\Program Files\WindowsApps\MSTeams_26163.405.4842.717_x64__8wekyb3d8bbwe\ms-teamsupdate.exe
+2026-08-13 11:19:30,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=21824 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:19:29,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=5368
+2026-08-13 11:19:29,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=10268 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:27,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=24000
+2026-08-13 11:19:27,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=5368 | C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:26,Process Monitor,4689,Application Closed,ngen.exe,PID=18640
+2026-08-13 11:19:26,Process Monitor,4689,Application Closed,conhost.exe,PID=8584
+2026-08-13 11:19:26,Process Monitor,4689,Application Closed,ngentask.exe,PID=9072
+2026-08-13 11:19:26,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=2144
+2026-08-13 11:19:25,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=23896
+2026-08-13 11:19:25,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=2144 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:24,Active Window,WINDOW_CHANGE,Window Changed,ML - File Explorer,User switched active window
+2026-08-13 11:19:24,Process Monitor,4689,Application Closed,DataExchangeHost.exe,PID=21304
+2026-08-13 11:19:22,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=22556
+2026-08-13 11:19:22,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=23896 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:21,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=18508
+2026-08-13 11:19:21,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=22556 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:20,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=5780
+2026-08-13 11:19:20,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=18656
+2026-08-13 11:19:20,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=18508 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:20,Process Monitor,4688,Application Opened,SearchProtocolHost.exe,PID=19808 | C:\Windows\System32\SearchProtocolHost.exe
+2026-08-13 11:19:19,Process Monitor,4689,Application Closed,RuntimeBroker.exe,PID=20788
+2026-08-13 11:19:19,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=18656 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:19:15,Active Window,WINDOW_CHANGE,Window Changed,Documents - File Explorer,User switched active window
+2026-08-13 11:19:15,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Documents\producer_consumer.exe,File content changed
+2026-08-13 11:19:15,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Documents\quick.exe,File content changed
+2026-08-13 11:19:15,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Documents\lab9[2].exe,File content changed
+2026-08-13 11:19:15,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Documents\lab9.exe,File content changed
+2026-08-13 11:19:15,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Documents\binary tree.exe,File content changed
+2026-08-13 11:19:15,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Documents\Desktop - Shortcut.lnk,File content changed
+2026-08-13 11:19:12,Active Window,WINDOW_CHANGE,Window Changed,Desktop - File Explorer,User switched active window
+2026-08-13 11:19:11,Process Monitor,4689,Application Closed,taskhostw.exe,PID=10248
+2026-08-13 11:19:07,Process Monitor,4688,Application Opened,FileCoAuth.exe,PID=3396 | C:\Program Files\Microsoft OneDrive\26.134.0713.0004\FileCoAuth.exe
+2026-08-13 11:19:06,Process Monitor,4689,Application Closed,OfficeC2RClient.exe,PID=20432
+2026-08-13 11:19:06,Active Window,WINDOW_CHANGE,Window Changed,Home - File Explorer,User switched active window
+2026-08-13 11:19:03,Process Monitor,4688,Application Opened,sppsvc.exe,PID=23184 | C:\Windows\System32\sppsvc.exe
+2026-08-13 11:19:03,Active Window,WINDOW_CHANGE,Window Changed,*==================DATA SCIENCE===== - Notepad,User switched active window
+2026-08-13 11:19:02,Process Monitor,4688,Application Opened,BridgeCommunication.exe,PID=11932 | C:\Windows\System32\DriverStore\FileRepository\hpcustomcapcomp.inf_amd64_e11727b9f39cacf0\x64\BridgeCommunication.exe
+2026-08-13 11:19:01,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=23748
+2026-08-13 11:19:00,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=23748 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:19:00,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=24220 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:19:00,Process Monitor,4688,Application Opened,OfficeC2RClient.exe,PID=20432 | C:\Program Files\Common Files\microsoft shared\ClickToRun\OfficeC2RClient.exe
+2026-08-13 11:18:58,Active Window,WINDOW_CHANGE,Window Changed,*httpsdrive.google.comfiled1PoZxBFsd - Notepad,User switched active window
+2026-08-13 11:18:54,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=8012 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:18:53,Process Monitor,4688,Application Opened,DataExchangeHost.exe,PID=21304 | C:\Windows\System32\DataExchangeHost.exe
+2026-08-13 11:18:53,Process Monitor,4688,Application Opened,taskhostw.exe,PID=10248 | C:\Windows\System32\taskhostw.exe
+2026-08-13 11:18:51,Process Monitor,4688,Application Opened,svchost.exe,PID=14604 | C:\Windows\System32\svchost.exe
+2026-08-13 11:18:50,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=19964
+2026-08-13 11:18:50,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=24500
+2026-08-13 11:18:50,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=3208
+2026-08-13 11:18:50,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=5780 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:49,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=24500 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:44,Active Window,WINDOW_CHANGE,Window Changed,*MySQL - Notepad,User switched active window
+2026-08-13 11:18:44,Process Monitor,4689,Application Closed,EOSOverlayRenderer-Win64-Shipping.exe,PID=20460
+2026-08-13 11:18:44,Process Monitor,4688,Application Opened,msedgewebview2.exe,PID=23960 | C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.78\msedgewebview2.exe
+2026-08-13 11:18:43,Active Window,WINDOW_CHANGE,Window Changed,Notepad,User switched active window
+2026-08-13 11:18:43,Process Monitor,4688,Application Opened,WmiPrvSE.exe,PID=6932 | C:\Windows\System32\wbem\WmiPrvSE.exe
+2026-08-13 11:18:43,Process Monitor,4688,Application Opened,EOSOverlayRenderer-Win64-Shipping.exe,PID=20460 | C:\Program Files (x86)\Epic Games\Epic Online Services\managedArtifacts\98bc04bc842e4906993fd6d6644ffb8d\EOSOverlayRenderer-Win64-Shipping.exe
+2026-08-13 11:18:42,Process Monitor,4689,Application Closed,git.exe,PID=14812
+2026-08-13 11:18:42,Process Monitor,4689,Application Closed,conhost.exe,PID=23144
+2026-08-13 11:18:42,Process Monitor,4688,Application Opened,Notepad.exe,PID=18060 | C:\Program Files\WindowsApps\Microsoft.WindowsNotepad_11.2605.29.0_x64__8wekyb3d8bbwe\Notepad\Notepad.exe
+2026-08-13 11:18:40,Process Monitor,4688,Application Opened,git.exe,PID=14812 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:18:40,Process Monitor,4688,Application Opened,conhost.exe,PID=23144 | C:\Windows\System32\conhost.exe
+2026-08-13 11:18:39,Process Monitor,4689,Application Closed,git.exe,PID=16752
+2026-08-13 11:18:39,Process Monitor,4689,Application Closed,git.exe,PID=8124
+2026-08-13 11:18:39,Process Monitor,4689,Application Closed,conhost.exe,PID=3112
+2026-08-13 11:18:38,Process Monitor,4688,Application Opened,git.exe,PID=16752 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:18:38,Process Monitor,4688,Application Opened,git.exe,PID=8124 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:18:38,Process Monitor,4688,Application Opened,conhost.exe,PID=3112 | C:\Windows\System32\conhost.exe
+2026-08-13 11:18:37,Process Monitor,4689,Application Closed,taskhostw.exe,PID=8564
+2026-08-13 11:18:36,Process Monitor,4688,Application Opened,taskhostw.exe,PID=8564 | C:\Windows\System32\taskhostw.exe
+2026-08-13 11:18:34,Process Monitor,4689,Application Closed,conhost.exe,PID=24156
+2026-08-13 11:18:34,Process Monitor,4689,Application Closed,git.exe,PID=14332
+2026-08-13 11:18:34,Process Monitor,4689,Application Closed,git.exe,PID=19804
+2026-08-13 11:18:34,Process Monitor,4689,Application Closed,conhost.exe,PID=18000
+2026-08-13 11:18:34,Process Monitor,4689,Application Closed,EOSOverlayRenderer-Win64-Shipping.exe,PID=9896
+2026-08-13 11:18:34,Process Monitor,4689,Application Closed,git.exe,PID=9416
+2026-08-13 11:18:34,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=16676
+2026-08-13 11:18:34,Process Monitor,4689,Application Closed,git.exe,PID=23776
+2026-08-13 11:18:34,Process Monitor,4688,Application Opened,msedgewebview2.exe,PID=24000 | C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.78\msedgewebview2.exe
+2026-08-13 11:18:33,Process Monitor,4688,Application Opened,conhost.exe,PID=24156 | C:\Windows\System32\conhost.exe
+2026-08-13 11:18:33,Process Monitor,4688,Application Opened,git.exe,PID=14332 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:18:33,Process Monitor,4688,Application Opened,git.exe,PID=19804 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:18:33,Process Monitor,4688,Application Opened,conhost.exe,PID=18000 | C:\Windows\System32\conhost.exe
+2026-08-13 11:18:33,Process Monitor,4688,Application Opened,msedgewebview2.exe,PID=24044 | C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.78\msedgewebview2.exe
+2026-08-13 11:18:33,Process Monitor,4688,Application Opened,git.exe,PID=9416 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:18:33,Process Monitor,4688,Application Opened,git.exe,PID=23776 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:18:32,Process Monitor,4689,Application Closed,identity_helper.exe,PID=20764
+2026-08-13 11:18:31,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=5168
+2026-08-13 11:18:30,Process Monitor,4689,Application Closed,brave.exe,PID=9064
+2026-08-13 11:18:30,Process Monitor,4689,Application Closed,brave.exe,PID=3448
+2026-08-13 11:18:30,Process Monitor,4689,Application Closed,brave.exe,PID=18536
+2026-08-13 11:18:29,Process Monitor,4689,Application Closed,brave.exe,PID=23100
+2026-08-13 11:18:29,Process Monitor,4689,Application Closed,brave.exe,PID=19616
+2026-08-13 11:18:29,Process Monitor,4688,Application Opened,msedgewebview2.exe,PID=5168 | C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.78\msedgewebview2.exe
+2026-08-13 11:18:27,Active Window,WINDOW_CHANGE,Window Changed,security_monitor.py - p2 - Visual Studio Code,User switched active window
+2026-08-13 11:18:27,Process Monitor,4689,Application Closed,brave.exe,PID=21172
+2026-08-13 11:18:26,Active Window,WINDOW_CHANGE,Window Changed,Program Manager,User switched active window
+2026-08-13 11:18:26,Process Monitor,4689,Application Closed,Notepad.exe,PID=24216
+2026-08-13 11:18:25,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=2336
+2026-08-13 11:18:25,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=3208 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:24,Process Monitor,4689,Application Closed,brave.exe,PID=7468
+2026-08-13 11:18:24,Process Monitor,4689,Application Closed,brave.exe,PID=7084
+2026-08-13 11:18:24,Active Window,WINDOW_CHANGE,Window Changed,Home - File Explorer,User switched active window
+2026-08-13 11:18:23,Active Window,WINDOW_CHANGE,Window Changed,*MySQL - Notepad,User switched active window
+2026-08-13 11:18:22,Process Monitor,4688,Application Opened,EOSOverlayRenderer-Win64-Shipping.exe,PID=9896 | C:\Program Files (x86)\Epic Games\Epic Online Services\managedArtifacts\98bc04bc842e4906993fd6d6644ffb8d\EOSOverlayRenderer-Win64-Shipping.exe
+2026-08-13 11:18:19,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=23868
+2026-08-13 11:18:19,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=2336 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:18,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=12936
+2026-08-13 11:18:18,Process Monitor,4689,Application Closed,FileCoAuth.exe,PID=23584
+2026-08-13 11:18:18,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=23868 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:17,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=16224
+2026-08-13 11:18:17,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=12936 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:16,Process Monitor,4689,Application Closed,RuntimeBroker.exe,PID=16376
+2026-08-13 11:18:12,Process Monitor,4689,Application Closed,SearchProtocolHost.exe,PID=5232
+2026-08-13 11:18:12,Active Window,WINDOW_CHANGE,Window Changed,You are signed in as class - Brave,User switched active window
+2026-08-13 11:18:10,Active Window,WINDOW_CHANGE,Window Changed,*MySQL - Notepad,User switched active window
+2026-08-13 11:18:08,Active Window,WINDOW_CHANGE,Window Changed,security_monitor.py - p2 - Visual Studio Code,User switched active window
+2026-08-13 11:18:08,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=18060
+2026-08-13 11:18:08,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=16224 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:07,Process Monitor,4689,Application Closed,python.exe,PID=22984
+2026-08-13 11:18:07,Process Monitor,4689,Application Closed,python.exe,PID=12248
+2026-08-13 11:18:07,Process Monitor,4689,Application Closed,conhost.exe,PID=7436
+2026-08-13 11:18:07,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=22936
+2026-08-13 11:18:07,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=18060 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:06,Process Monitor,4688,Application Opened,python.exe,PID=12248 | C:\Users\rakhe\AppData\Local\Programs\Python\Python311\python.exe
+2026-08-13 11:18:06,Process Monitor,4688,Application Opened,conhost.exe,PID=7436 | C:\Windows\System32\conhost.exe
+2026-08-13 11:18:06,Process Monitor,4688,Application Opened,python.exe,PID=22984 | C:\project\p2\.venv\Scripts\python.exe
+2026-08-13 11:18:05,Process Monitor,4689,Application Closed,git.exe,PID=10588
+2026-08-13 11:18:05,Process Monitor,4689,Application Closed,conhost.exe,PID=23092
+2026-08-13 11:18:05,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=23764
+2026-08-13 11:18:05,Process Monitor,4689,Application Closed,git.exe,PID=3112
+2026-08-13 11:18:05,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=20900
+2026-08-13 11:18:05,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=22936 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:04,Process Monitor,4688,Application Opened,conhost.exe,PID=23092 | C:\Windows\System32\conhost.exe
+2026-08-13 11:18:04,Process Monitor,4688,Application Opened,git.exe,PID=10588 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:18:04,Process Monitor,4688,Application Opened,git.exe,PID=3112 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:18:03,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=20900 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe
+2026-08-13 11:18:02,Process Monitor,4689,Application Closed,git.exe,PID=24488
+2026-08-13 11:18:02,Process Monitor,4689,Application Closed,git.exe,PID=8564
+2026-08-13 11:18:02,Process Monitor,4689,Application Closed,conhost.exe,PID=11952
+2026-08-13 11:18:01,Active Window,WINDOW_CHANGE,Window Changed,*MySQL - Notepad,User switched active window
+2026-08-13 11:18:01,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\Downloads\MAJOR_PROJECT_PHASE_(Team 5).pptx,File content changed
+2026-08-13 11:18:01,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\Downloads\CERT_Features.xls,File content changed
+2026-08-13 11:18:01,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\Downloads\CERT_Features_Final.xls,File content changed
+2026-08-13 11:18:01,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\Downloads\LANL_Features_Final.xls,File content changed
+2026-08-13 11:18:01,Process Monitor,4689,Application Closed,HPPrinterHealthMonitor.exe,PID=14144
+2026-08-13 11:18:00,Process Monitor,4688,Application Opened,git.exe,PID=24488 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:18:00,Process Monitor,4688,Application Opened,git.exe,PID=8564 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:18:00,Process Monitor,4688,Application Opened,conhost.exe,PID=11952 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:58,Active Window,WINDOW_CHANGE,Window Changed,security_monitor.py - p2 - Visual Studio Code,User switched active window
+2026-08-13 11:17:30,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=13212
+2026-08-13 11:17:30,Process Monitor,4689,Application Closed,conhost.exe,PID=23636
+2026-08-13 11:17:29,Process Monitor,4689,Application Closed,git.exe,PID=23620
+2026-08-13 11:17:29,Process Monitor,4689,Application Closed,git.exe,PID=18108
+2026-08-13 11:17:29,Process Monitor,4689,Application Closed,svchost.exe,PID=18048
+2026-08-13 11:17:29,Process Monitor,4688,Application Opened,git.exe,PID=23708 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:17:29,Process Monitor,4688,Application Opened,git.exe,PID=7580 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:17:29,Process Monitor,4688,Application Opened,git.exe,PID=7124 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:17:29,Process Monitor,4688,Application Opened,conhost.exe,PID=20556 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:29,Process Monitor,4688,Application Opened,git.exe,PID=23240 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:17:29,Process Monitor,4688,Application Opened,conhost.exe,PID=23744 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:28,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=16596
+2026-08-13 11:17:28,Process Monitor,4689,Application Closed,wermgr.exe,PID=24004
+2026-08-13 11:17:28,Process Monitor,4688,Application Opened,conhost.exe,PID=23636 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:28,Process Monitor,4688,Application Opened,git.exe,PID=23620 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:17:28,Process Monitor,4688,Application Opened,git.exe,PID=18108 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:17:28,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=16376 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:17:27,Active Window,WINDOW_CHANGE,Window Changed,*MongoDB - Notepad,User switched active window
+2026-08-13 11:17:27,Process Monitor,4689,Application Closed,backgroundTaskHost.exe,PID=2860
+2026-08-13 11:17:27,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=13212 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:17:26,Process Monitor,4689,Application Closed,python.exe,PID=12564
+2026-08-13 11:17:26,Process Monitor,4689,Application Closed,python.exe,PID=23940
+2026-08-13 11:17:26,Process Monitor,4689,Application Closed,conhost.exe,PID=18208
+2026-08-13 11:17:26,Process Monitor,4688,Application Opened,DataExchangeHost.exe,PID=15180 | C:\Windows\System32\DataExchangeHost.exe
+2026-08-13 11:17:26,Process Monitor,4688,Application Opened,backgroundTaskHost.exe,PID=2860 | C:\Windows\System32\backgroundTaskHost.exe
+2026-08-13 11:17:26,Process Monitor,4688,Application Opened,Code.exe,PID=3036 | C:\Users\rakhe\AppData\Local\Programs\Microsoft VS Code\Code.exe
+2026-08-13 11:17:25,Process Monitor,4688,Application Opened,python.exe,PID=12564 | C:\Users\rakhe\AppData\Local\Programs\Python\Python311\python.exe
+2026-08-13 11:17:25,Process Monitor,4688,Application Opened,python.exe,PID=23940 | C:\project\p2\.venv\Scripts\python.exe
+2026-08-13 11:17:25,Process Monitor,4688,Application Opened,conhost.exe,PID=18208 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:21,Process Monitor,4689,Application Closed,Code.exe,PID=22844
+2026-08-13 11:17:20,Process Monitor,4689,Application Closed,MoUsoCoreWorker.exe,PID=1280
+2026-08-13 11:17:19,Process Monitor,4688,Application Opened,Code.exe,PID=22844 | C:\Users\rakhe\AppData\Local\Programs\Microsoft VS Code\Code.exe
+2026-08-13 11:17:17,Process Monitor,4689,Application Closed,postgres.exe,PID=3940
+2026-08-13 11:17:15,Process Monitor,4689,Application Closed,git.exe,PID=24440
+2026-08-13 11:17:15,Process Monitor,4689,Application Closed,wsl.exe,PID=24472
+2026-08-13 11:17:15,Process Monitor,4689,Application Closed,sppsvc.exe,PID=3152
+2026-08-13 11:17:15,Process Monitor,4689,Application Closed,git.exe,PID=18928
+2026-08-13 11:17:15,Process Monitor,4689,Application Closed,cmd.exe,PID=20324
+2026-08-13 11:17:15,Process Monitor,4689,Application Closed,conhost.exe,PID=23588
+2026-08-13 11:17:15,Process Monitor,4689,Application Closed,conhost.exe,PID=23584
+2026-08-13 11:17:15,Process Monitor,4688,Application Opened,postgres.exe,PID=3940 | C:\Program Files\PostgreSQL\18\bin\postgres.exe
+2026-08-13 11:17:14,Process Monitor,4688,Application Opened,powershell.exe,PID=24056 | C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+2026-08-13 11:17:14,Process Monitor,4688,Application Opened,wsl.exe,PID=24472 | C:\Windows\System32\wsl.exe
+2026-08-13 11:17:14,Process Monitor,4688,Application Opened,git.exe,PID=24440 | C:\Program Files\Git\mingw64\bin\git.exe
+2026-08-13 11:17:14,Process Monitor,4688,Application Opened,OpenConsole.exe,PID=24212 | C:\Users\rakhe\AppData\Local\Programs\Microsoft VS Code\a5b5009513\resources\app\node_modules.asar.unpacked\node-pty\build\Release\conpty\OpenConsole.exe
+2026-08-13 11:17:14,Process Monitor,4688,Application Opened,git.exe,PID=18928 | C:\Program Files\Git\cmd\git.exe
+2026-08-13 11:17:14,Process Monitor,4688,Application Opened,cmd.exe,PID=20324 | C:\Windows\System32\cmd.exe
+2026-08-13 11:17:14,Process Monitor,4688,Application Opened,conhost.exe,PID=23588 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:14,Process Monitor,4688,Application Opened,conhost.exe,PID=23584 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:12,Active Window,WINDOW_CHANGE,Window Changed,*Project 9(Forecasting of Smart city - Notepad,User switched active window
+2026-08-13 11:17:11,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Desktop\timetable generator_project.zip,File content changed
+2026-08-13 11:17:11,Active Window,WINDOW_CHANGE,Window Changed,Notepad,User switched active window
+2026-08-13 11:17:11,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Desktop\timetable generator.zip,File content changed
+2026-08-13 11:17:11,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Desktop\timetable generator (2).zip,File content changed
+2026-08-13 11:17:11,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=22004
+2026-08-13 11:17:11,Process Monitor,4689,Application Closed,EOSOverlayRenderer-Win64-Shipping.exe,PID=10852
+2026-08-13 11:17:11,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=20776
+2026-08-13 11:17:10,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Desktop\nokia-game.zip,File content changed
+2026-08-13 11:17:09,Process Monitor,4689,Application Closed,conhost.exe,PID=23880
+2026-08-13 11:17:09,Process Monitor,4689,Application Closed,rg.exe,PID=8208
+2026-08-13 11:17:09,Process Monitor,4688,Application Opened,msedgewebview2.exe,PID=7436 | C:\Program Files (x86)\Microsoft\EdgeWebView\Application\151.0.4129.78\msedgewebview2.exe
+2026-08-13 11:17:09,Process Monitor,4688,Application Opened,EOSOverlayRenderer-Win64-Shipping.exe,PID=10852 | C:\Program Files (x86)\Epic Games\Epic Online Services\managedArtifacts\98bc04bc842e4906993fd6d6644ffb8d\EOSOverlayRenderer-Win64-Shipping.exe
+2026-08-13 11:17:07,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=13580
+2026-08-13 11:17:06,Process Monitor,4689,Application Closed,mscopilot.exe,PID=24444
+2026-08-13 11:17:06,Process Monitor,4689,Application Closed,mscopilot.exe,PID=24436
+2026-08-13 11:17:06,Process Monitor,4689,Application Closed,msedgewebview2.exe,PID=2608
+2026-08-13 11:17:06,Process Monitor,4689,Application Closed,mscopilot.exe,PID=24552
+2026-08-13 11:17:06,Process Monitor,4689,Application Closed,EpicWebHelper.exe,PID=23752
+2026-08-13 11:17:06,Process Monitor,4689,Application Closed,wermgr.exe,PID=13056
+2026-08-13 11:17:06,Process Monitor,4688,Application Opened,wermgr.exe,PID=24004 | C:\Windows\System32\wermgr.exe
+2026-08-13 11:17:06,Process Monitor,4688,Application Opened,Notepad.exe,PID=24216 | C:\Program Files\WindowsApps\Microsoft.WindowsNotepad_11.2605.29.0_x64__8wekyb3d8bbwe\Notepad\Notepad.exe
+2026-08-13 11:17:05,Process Monitor,4688,Application Opened,conhost.exe,PID=23884 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:05,Process Monitor,4688,Application Opened,pet.exe,PID=1616 | C:\Users\rakhe\.vscode\extensions\ms-python.vscode-python-envs-1.36.0-win32-x64\python-env-tools\bin\pet.exe
+2026-08-13 11:17:05,Process Monitor,4688,Application Opened,Code.exe,PID=23924 | C:\Users\rakhe\AppData\Local\Programs\Microsoft VS Code\Code.exe
+2026-08-13 11:17:05,Process Monitor,4688,Application Opened,conhost.exe,PID=23880 | C:\Windows\System32\conhost.exe
+2026-08-13 11:17:04,Process Monitor,4689,Application Closed,mc-web-view.exe,PID=13720
+2026-08-13 11:17:04,Process Monitor,4689,Application Closed,RuntimeBroker.exe,PID=7464
+2026-08-13 11:17:04,Process Monitor,4688,Application Opened,rg.exe,PID=8208 | C:\Users\rakhe\AppData\Local\Programs\Microsoft VS Code\a5b5009513\resources\app\node_modules.asar.unpacked\@vscode\ripgrep-universal\bin\win32-x64\rg.exe
+2026-08-13 11:17:03,Process Monitor,4689,Application Closed,TrustedInstaller.exe,PID=9276
+2026-08-13 11:17:03,Process Monitor,4689,Application Closed,TiWorker.exe,PID=9936
+2026-08-13 11:17:02,Process Monitor,4688,Application Opened,EpicWebHelper.exe,PID=23752 | C:\Program Files\Epic Games\Launcher\Engine\Binaries\Win64\EpicWebHelper.exe
+2026-08-13 11:17:01,Process Monitor,4689,Application Closed,WmiPrvSE.exe,PID=21128
+2026-08-13 11:17:01,Process Monitor,4688,Application Opened,mscopilot.exe,PID=24436 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:17:01,Process Monitor,4688,Application Opened,mscopilot.exe,PID=24552 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:17:01,Process Monitor,4688,Application Opened,mscopilot.exe,PID=24444 | C:\Program Files (x86)\Microsoft\Copilot\Application\mscopilot.exe
+2026-08-13 11:17:00,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Desktop\Barron's_GRE(12th_Edition).pdf,File content changed
+2026-08-13 11:17:00,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Desktop\barron's wordlist.pdf,File content changed
+2026-08-13 11:17:00,File Monitor,FILE_MODIFY,File Modified,C:\Users\rakhe\OneDrive\Desktop\Application_sitaraman_foundation.pdf,File content changed
+2026-08-13 11:16:59,Active Window,WINDOW_CHANGE,Window Changed,security_monitor.py - p2 - Visual Studio Code,User switched active window
+2026-08-13 11:16:58,Process Monitor,4688,Application Opened,RuntimeBroker.exe,PID=24344 | C:\Windows\System32\RuntimeBroker.exe
+2026-08-13 11:16:57,Process Monitor,4689,Application Closed,mscorsvw.exe,PID=24156
+2026-08-13 11:16:57,Process Monitor,4688,Application Opened,mscorsvw.exe,PID=24284 | C:\Windows\Microsoft.NET\Framework64\v4.0.30319\mscorsvw.exe

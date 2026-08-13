@@ -1,3 +1,4 @@
+import csv
 from database.database import get_all_events
 from PySide6.QtCore import Qt, QTimer
 
@@ -12,7 +13,8 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
     QVBoxLayout,
     QWidget,
-    QFrame
+    QFrame,
+    QFileDialog
 )
 
 
@@ -118,6 +120,7 @@ class MainWindow(QMainWindow):
         self.search.setPlaceholderText("Search...")
 
         self.search.setMinimumHeight(35)
+        self.search.textChanged.connect(self.load_events)
 
         main_layout.addWidget(self.search)
 
@@ -125,12 +128,13 @@ class MainWindow(QMainWindow):
 
         self.table = QTableWidget()
 
-        self.table.setColumnCount(5)
+        self.table.setColumnCount(6)
 
         self.table.setHorizontalHeaderLabels(
             [
                 "Time",
                 "Source",
+                "Event ID",
                 "Action",
                 "Application",
                 "Details"
@@ -151,7 +155,8 @@ class MainWindow(QMainWindow):
         self.stop_btn = QPushButton("■ Stop Monitoring")
 
         self.export_btn = QPushButton("📤 Export CSV")
-
+        self.export_btn.clicked.connect(self.export_csv)
+        
         buttons.addWidget(self.start_btn)
 
         buttons.addWidget(self.stop_btn)
@@ -171,23 +176,64 @@ class MainWindow(QMainWindow):
         self.load_events()
         
     def load_events(self):
-    
-                events = get_all_events()
-    
-                self.table.setRowCount(len(events))
-    
-                for row, event in enumerate(events):
-    
-                    for col, value in enumerate(event):
-    
-                        self.table.setItem(
-                            row,
-                            col,
-                            QTableWidgetItem(str(value))
+
+        events = get_all_events()
+
+        search_text = self.search.text().lower().strip()
+
+        if search_text:
+            events = [
+                event for event in events
+                if any(search_text in str(value).lower() for value in event)
+            ]
+
+        self.table.setRowCount(len(events))
+
+        for row, event in enumerate(events):
+
+            for col, value in enumerate(event):
+
+                self.table.setItem(
+                    row,
+                    col,
+                    QTableWidgetItem(str(value))
                 )
-    
-                # Update Total Events card
-                labels = self.total_events.findChildren(QLabel)
-    
-                if len(labels) >= 2:
-                    labels[1].setText(str(len(events)))
+
+        # Update Total Events card
+        labels = self.total_events.findChildren(QLabel)
+
+        if len(labels) >= 2:
+            labels[1].setText(str(len(events)))
+            
+            
+    def export_csv(self):
+
+        events = get_all_events()
+
+        if not events:
+            return
+
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export Events",
+            "forensic_events.csv",
+            "CSV Files (*.csv)"
+        )
+
+        if not file_path:
+            return
+
+        with open(file_path, "w", newline="", encoding="utf-8") as file:
+
+            writer = csv.writer(file)
+
+            writer.writerow([
+                "Time",
+                "Source",
+                "Event ID",
+                "Action",
+                "Application",
+                "Details"
+            ])
+
+            writer.writerows(events)
