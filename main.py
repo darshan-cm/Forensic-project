@@ -7,6 +7,7 @@ from monitors.process_monitor import process_monitor
 from monitors.file_monitor import file_monitor
 from monitors.active_window import active_window_monitor
 from event_engine.worker import event_worker
+from monitors.file_transfer_monitor import file_transfer_monitor
 
 print("=" * 70)
 print("        FORENSICGUARD - REAL TIME MONITOR")
@@ -39,6 +40,11 @@ Thread(
 # Start File Monitor
 Thread(
     target=file_monitor,
+    daemon=True
+).start()
+
+Thread(
+    target=file_transfer_monitor,
     daemon=True
 ).start()
 
