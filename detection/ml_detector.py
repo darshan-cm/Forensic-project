@@ -1,6 +1,7 @@
+import sqlite3
 import subprocess
 import json
-
+import re
 import joblib
 import pandas as pd
 
@@ -12,7 +13,7 @@ from features.feature_aggregator import get_features
 # ============================================================
 
 MODEL_PATH = "models/forensicguard_rf.pkl"
-
+DB_PATH = "database/forensic.db"
 
 # ============================================================
 # MODEL FEATURE ORDER
@@ -41,60 +42,59 @@ FEATURE_ORDER = [
 def get_usb_status():
 
     """
-    Detect actual removable USB storage / portable devices.
+    Determine whether a real USB device is currently connected.
 
-    Internal USB controllers, hubs and interfaces are ignored.
+    Uses the USB monitor's CONNECTED / REMOVED events.
+    Internal USB devices that never generate our forensic
+    USB_CONNECTED events are ignored.
     """
 
-    command = [
-        "powershell",
-        "-NoProfile",
-        "-Command",
-        """
-        $devices = Get-CimInstance Win32_PnPEntity |
-            Where-Object {
-                $_.PNPDeviceID -like 'USB*' -and
-                $_.Status -eq 'OK' -and
-                $_.Name -notmatch 'USB Root Hub' -and
-                $_.Name -notmatch 'USB Hub' -and
-                $_.Name -notmatch 'Host Controller' -and
-                $_.Name -notmatch 'Generic USB Hub' -and
-                $_.Name -notmatch 'USB Composite Device' -and
-                $_.Name -notmatch 'ADB Interface'
-            }
-
-        $realDevice = $devices | Where-Object {
-            $_.Name -match 'OPPO|F19|Phone|Android|MTP|Portable|Storage|Mass'
-        }
-
-        if ($realDevice) {
-            Write-Output "YES"
-        }
-        else {
-            Write-Output "NO"
-        }
-        """
-    ]
+    conn = sqlite3.connect(DB_PATH)
 
     try:
 
-        result = subprocess.run(
-            command,
-            capture_output=True,
-            text=True,
-            timeout=5
+        rows = conn.execute("""
+            SELECT event_id, details
+            FROM events
+            WHERE event_id IN (
+                'USB_CONNECTED',
+                'USB_REMOVED'
+            )
+            ORDER BY id ASC
+        """).fetchall()
+
+    finally:
+
+        conn.close()
+
+    # Track current state by VID.
+    usb_states = {}
+
+    for event_id, details in rows:
+
+        details = details or ""
+
+        # Extract VID=XXXX from our USB monitor's event.
+        match = re.search(
+            r"VID=([0-9A-Fa-f]{4})",
+            details
         )
 
-        return result.stdout.strip().upper() == "YES"
+        if not match:
+            continue
 
-    except Exception as error:
+        vid = match.group(1).upper()
 
-        print(
-            f"[USB Status] Unable to determine current USB status: "
-            f"{error}"
-        )
+        if event_id == "USB_CONNECTED":
+            usb_states[vid] = True
 
-        return False
+        elif event_id == "USB_REMOVED":
+            usb_states[vid] = False
+
+    return any(
+        state is True
+        for state in usb_states.values()
+    )
 
 
 # ============================================================

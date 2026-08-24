@@ -1,6 +1,10 @@
-pywin32==311
+PySide6==6.11.2
 psutil==7.0.0
 watchdog==6.0.0
-Flask==3.1.2
+pywin32==311
 WMI==1.5.1
-python-dateutil==2.9.0.post0
+Flask==3.1.2
+joblib==1.5.3
+numpy==2.4.6
+pandas==3.0.5
+scikit-learn==1.8.0

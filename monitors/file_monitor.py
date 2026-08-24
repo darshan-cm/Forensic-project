@@ -1,3 +1,4 @@
+from fileinput import filename
 import os
 import time
 from pathlib import Path
@@ -23,6 +24,7 @@ IGNORE_DIRS = {
 IGNORE_FILES = {
     "forensic.db",
     "forensic.db-journal",
+    "desktop.ini",
 }
 
 IGNORE_EXTENSIONS = {
@@ -31,6 +33,7 @@ IGNORE_EXTENSIONS = {
     ".pyc",
     ".pyd",
     ".cache",
+    ".lnk",
 }
 
 # Used to suppress duplicate events
@@ -44,9 +47,13 @@ class FileMonitorHandler(FileSystemEventHandler):
         path = path.lower()
 
         # Ignore our own database
-        for file in IGNORE_FILES:
-            if file.lower() in path:
-                return True
+        filename = Path(path).name.lower()
+
+        if filename in {
+            file.lower()
+            for file in IGNORE_FILES
+        }:
+            return True
 
         # Ignore folders
         parts = Path(path).parts

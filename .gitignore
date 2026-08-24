@@ -1,7 +1,36 @@
+# Virtual environment
 .venv/
+venv/
+
+# Python cache
 __pycache__/
 *.pyc
+
+# Runtime databases
 *.db
 *.sqlite
+*.sqlite3
+
+# Logs
 *.log
+
+# Environment / secrets
 .env
+
+# Generated exports
+exports/*
+!exports/.gitkeep
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
