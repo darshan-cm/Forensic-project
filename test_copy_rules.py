@@ -35,6 +35,15 @@ def _event_row(timestamp, details, event_id="FILE_COPY"):
     )
 
 
+def _test_timestamp():
+    return datetime.now().replace(
+        hour=12,
+        minute=0,
+        second=0,
+        microsecond=0,
+    ).strftime("%Y-%m-%d %H:%M:%S")
+
+
 class FileCopyRuleTests(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.TemporaryDirectory(prefix="forensicguard_copy_rules_")
@@ -63,7 +72,7 @@ class FileCopyRuleTests(unittest.TestCase):
         self.temp_dir.cleanup()
 
     def _assess(self, file_sizes, previous_rows=(), event_id="FILE_COPY"):
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = _test_timestamp()
         details = _copy_details(file_sizes)
         row = _event_row(timestamp, details, event_id=event_id)
         trigger_event = {
@@ -91,7 +100,7 @@ class FileCopyRuleTests(unittest.TestCase):
         self.assertNotIn(1, [rule["rule_id"] for rule in result["triggered_rules"]])
 
     def test_rule_2_detects_multiple_large_files_in_ten_minute_window(self):
-        previous_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        previous_time = _test_timestamp()
         previous_details = _copy_details([LARGE_FILE_SIZE])
         previous_row = _event_row(previous_time, previous_details)
         result, _, _ = self._assess([LARGE_FILE_SIZE], previous_rows=[previous_row])
@@ -128,7 +137,7 @@ class FileCopyRuleTests(unittest.TestCase):
 
     def test_all_matching_rules_are_persisted_as_separate_assessments(self):
         risk_db.initialize_riskalert_db()
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        timestamp = _test_timestamp()
         details = _copy_details([LARGE_FILE_SIZE] * 3)
         event = {
             "timestamp": timestamp,

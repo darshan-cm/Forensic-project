@@ -190,7 +190,9 @@ class RulesTwentySixToFiftyTests(unittest.TestCase):
             window.refresh_dashboard()
             window.refresh_dashboard()
             window.timer.stop()
+            window._session_finalized = True
             window.close()
+            window.forensic_session.finish()
 
         persist_assessment.assert_not_called()
         alert_manager.return_value.process_risk.assert_not_called()

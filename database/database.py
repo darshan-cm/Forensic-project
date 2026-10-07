@@ -79,8 +79,10 @@ def insert_event(source, event_id, action, application, details):
          application,
          details))
 
+    event_row_id = cursor.lastrowid
     conn.commit()
     conn.close()
+    return event_row_id
     
 def get_all_events():
 

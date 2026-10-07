@@ -279,7 +279,7 @@ class EventRiskHandler:
                             rule["evidence"],
                         ]
 
-                    record_risk_assessment(
+                    risk_id = record_risk_assessment(
                         assessment_result,
                         notification_triggered=notification_triggered,
                         notification_status=notification_status,
@@ -291,6 +291,19 @@ class EventRiskHandler:
                         rule_id=rule.get("rule_id") if rule else None,
                         rule_name=rule.get("rule_name") if rule else None,
                     )
+                    if risk_id is not None:
+                        try:
+                            from reports.session_context import record_assessment
+
+                            record_assessment(
+                                event_dict.get("session_id"),
+                                risk_id,
+                            )
+                        except Exception as error:
+                            print(
+                                "[Forensic Session] Risk assessment association "
+                                f"failed: {error}"
+                            )
             
             except Exception as error:
                 print(f"[Risk Audit DB] Recording failed: {error}")

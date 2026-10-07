@@ -5,12 +5,14 @@ from __future__ import annotations
 import os
 import re
 import sqlite3
+import json
 import uuid
 from collections import Counter
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
+from threading import RLock
 from typing import Any
 from xml.sax.saxutils import escape
 
@@ -22,10 +24,12 @@ from reportlab.lib.units import mm
 from reportlab.platypus import (
     Paragraph,
     SimpleDocTemplate,
-    Spacer,
     Table,
     TableStyle,
 )
+
+from detection.rule_registry import get_rule
+from reports.session_context import finish_session, register_session
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FORENSIC_DB_PATH = PROJECT_ROOT / "database" / "forensic.db"
@@ -51,14 +55,20 @@ def _read_connection(path: Path):
         connection.close()
 
 
-def _authenticated_user_id(user: Any) -> str | None:
+def _authenticated_user_info(user: Any) -> tuple[str | None, str | None]:
     if user is None:
-        return None
-    value = user.get("id") if isinstance(user, dict) else getattr(user, "id", None)
-    if value is None:
-        return None
-    identifier = str(value).strip()
-    return identifier[:200] or None
+        return None, None
+    if isinstance(user, dict):
+        user_id = user.get("id")
+        email = user.get("email")
+    else:
+        user_id = getattr(user, "id", None)
+        email = getattr(user, "email", None)
+    safe_id = str(user_id).strip()[:200] if user_id is not None else ""
+    safe_email = str(email).strip()[:254] if email is not None else ""
+    if "@" not in safe_email or any(char.isspace() for char in safe_email):
+        safe_email = ""
+    return safe_id or None, safe_email or None
 
 
 def _timestamp(value: datetime) -> str:
@@ -69,6 +79,13 @@ def _bounded_text(value: Any, limit: int = MAX_TEXT_LENGTH) -> str:
     if value is None:
         return ""
     text = re.sub(r"\s+", " ", str(value)).strip()
+    text = re.sub(
+        r"(?i)\b(password|passwd|secret|token|api[_ -]?key|authorization)"
+        r"\s*[:=]\s*([^\s,;]+)",
+        r"\1=[REDACTED]",
+        text,
+    )
+    text = re.sub(r"(?i)\bbearer\s+[A-Za-z0-9._~+/=-]+", "Bearer [REDACTED]", text)
     return text[:limit] + ("..." if len(text) > limit else "")
 
 
@@ -79,9 +96,10 @@ def _pdf_text(value: Any) -> str:
 
 @dataclass
 class ForensicSession:
-    """In-memory boundaries and database high-water marks for one login."""
+    """Session boundaries and row-ID associations without telemetry migrations."""
 
     user_id: str | None = None
+    user_email: str | None = None
     forensic_db_path: Path = FORENSIC_DB_PATH
     risk_db_path: Path = RISK_DB_PATH
     report_directory: Path = REPORT_DIRECTORY
@@ -89,17 +107,30 @@ class ForensicSession:
     session_id: str = field(default_factory=lambda: uuid.uuid4().hex)
     initial_event_id: int = field(init=False)
     initial_assessment_id: int = field(init=False)
+    metadata_path: Path = field(init=False)
+    associations_path: Path = field(init=False)
+    _association_lock: RLock = field(init=False, repr=False)
+    _closed_at: datetime | None = field(default=None, init=False, repr=False)
+    _last_report_path: Path | None = field(default=None, init=False, repr=False)
+    _last_report_at: datetime | None = field(default=None, init=False, repr=False)
 
     def __post_init__(self) -> None:
         self.forensic_db_path = Path(self.forensic_db_path)
         self.risk_db_path = Path(self.risk_db_path)
         self.report_directory = Path(self.report_directory)
+        self._association_lock = RLock()
         self.initial_event_id = self._latest_id(
             self.forensic_db_path, "events"
         )
         self.initial_assessment_id = self._latest_id(
             self.risk_db_path, "risk_assessments"
         )
+        session_directory = self.report_directory / ".sessions"
+        session_directory.mkdir(parents=True, exist_ok=True)
+        self.metadata_path = session_directory / f"{self.session_id}.json"
+        self.associations_path = session_directory / f"{self.session_id}.jsonl"
+        self._write_session_metadata()
+        register_session(self)
 
     @classmethod
     def start(
@@ -110,8 +141,10 @@ class ForensicSession:
         risk_db_path: Path = RISK_DB_PATH,
         report_directory: Path = REPORT_DIRECTORY,
     ) -> "ForensicSession":
+        user_id, user_email = _authenticated_user_info(user)
         return cls(
-            user_id=_authenticated_user_id(user),
+            user_id=user_id,
+            user_email=user_email,
             forensic_db_path=forensic_db_path,
             risk_db_path=risk_db_path,
             report_directory=report_directory,
@@ -127,22 +160,115 @@ class ForensicSession:
             ).fetchone()
         return int(row[0])
 
+    def record_event_row_id(self, event_row_id: int) -> None:
+        self._append_association("event", event_row_id)
+
+    def record_assessment_row_id(self, assessment_row_id: int) -> None:
+        self._append_association("assessment", assessment_row_id)
+
+    def _append_association(self, record_type: str, row_id: int) -> None:
+        if record_type not in {"event", "assessment"}:
+            raise ValueError(f"Unsupported session association type: {record_type}")
+        if row_id <= 0:
+            raise ValueError("Associated database row IDs must be positive.")
+        with self._association_lock:
+            if self._closed_at is not None:
+                return
+            with self.associations_path.open("a", encoding="utf-8") as ledger:
+                ledger.write(
+                    json.dumps(
+                        {"type": record_type, "row_id": row_id},
+                        separators=(",", ":"),
+                    )
+                    + "\n"
+                )
+                ledger.flush()
+
+    def _associated_row_ids(self, record_type: str) -> list[int]:
+        if not self.associations_path.exists():
+            return []
+        row_ids: list[int] = []
+        with self._association_lock:
+            with self.associations_path.open("r", encoding="utf-8") as ledger:
+                for line_number, line in enumerate(ledger, start=1):
+                    try:
+                        item = json.loads(line)
+                        if item.get("type") == record_type:
+                            row_ids.append(int(item["row_id"]))
+                    except (json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
+                        raise ValueError(
+                            f"Invalid session association ledger "
+                            f"{self.associations_path} at line {line_number}."
+                        ) from error
+        return row_ids
+
+    def _write_session_metadata(
+        self,
+        *,
+        ended_at: datetime | None = None,
+        last_report: Path | None = None,
+    ) -> None:
+        metadata = {
+            "session_id": self.session_id,
+            "user_id": self.user_id,
+            "user_email": self.user_email,
+            "started_at": _timestamp(self.started_at),
+            "ended_at": _timestamp(ended_at) if ended_at else None,
+            "initial_event_row_id": self.initial_event_id,
+            "initial_assessment_row_id": self.initial_assessment_id,
+            "historical_rows_associated": False,
+            "association_ledger": self.associations_path.name,
+            "last_report": last_report.name if last_report else None,
+        }
+        temporary_path = self.metadata_path.with_suffix(".json.tmp")
+        temporary_path.write_text(
+            json.dumps(metadata, indent=2),
+            encoding="utf-8",
+        )
+        os.replace(temporary_path, self.metadata_path)
+
+    def finish(self, ended_at: datetime | None = None) -> None:
+        end_time = ended_at or self._last_report_at or datetime.now().astimezone()
+        if end_time.tzinfo is None:
+            end_time = end_time.astimezone()
+        if end_time < self.started_at:
+            raise ValueError("Session end cannot precede the session start.")
+        with self._association_lock:
+            self._write_session_metadata(
+                ended_at=end_time,
+                last_report=self._last_report_path,
+            )
+            self._closed_at = end_time
+        finish_session(self.session_id)
+
     def generate_report(self, report_time: datetime | None = None) -> Path:
+        from event_engine.engine import wait_until_idle
+
+        if not wait_until_idle(timeout=5):
+            raise TimeoutError(
+                "Forensic event processing is still pending; retry report generation."
+            )
         end_time = report_time or datetime.now().astimezone()
+        if end_time.tzinfo is None:
+            end_time = end_time.astimezone()
         if end_time < self.started_at:
             raise ValueError("Report time cannot precede the session start.")
 
-        events = self._session_events(end_time)
-        assessments = self._session_assessments(end_time)
+        event_row_ids = self._associated_row_ids("event")
+        assessment_row_ids = self._associated_row_ids("assessment")
+        events = self._session_events(event_row_ids)
+        assessments = self._session_assessments(assessment_row_ids)
         evidence = self._session_evidence(assessments)
+        report_id = uuid.uuid4().hex
         report_data = self._build_report_data(
-            end_time, events, assessments, evidence
+            end_time, events, assessments, evidence, report_id
         )
 
         self.report_directory.mkdir(parents=True, exist_ok=True)
         generated_stamp = end_time.strftime("%Y%m%d_%H%M%S_%f")
         filename = (
-            f"ForensicGuard_{self.session_id}_{generated_stamp}.pdf"
+            f"ForensicGuard_Report_{self.session_id}_{generated_stamp}_"
+            f"{report_id}.pdf"
         )
         destination = self.report_directory / filename
         temporary_path = destination.with_suffix(".pdf.tmp")
@@ -151,52 +277,78 @@ class ForensicSession:
             self._verify_pdf(temporary_path)
             os.replace(temporary_path, destination)
             self._verify_pdf(destination)
+            self._last_report_path = destination
+            self._last_report_at = end_time
+            self._write_session_metadata(
+                ended_at=self._closed_at,
+                last_report=destination,
+            )
         except Exception:
             if temporary_path.exists():
                 temporary_path.unlink()
             raise
         return destination
 
-    def _session_events(self, end_time: datetime) -> list[dict[str, Any]]:
+    def _session_events(
+        self, event_row_ids: list[int] | None = None
+    ) -> list[dict[str, Any]]:
+        event_row_ids = (
+            self._associated_row_ids("event")
+            if event_row_ids is None
+            else event_row_ids
+        )
+        if not event_row_ids:
+            return []
+        rows: list[sqlite3.Row] = []
         with _read_connection(self.forensic_db_path) as connection:
             connection.row_factory = sqlite3.Row
-            rows = connection.execute(
-                """
-                SELECT id, timestamp, source, event_id, action, application, details
-                FROM events
-                WHERE id > ? AND timestamp >= ? AND timestamp <= ?
-                ORDER BY id
-                """,
-                (
-                    self.initial_event_id,
-                    _timestamp(self.started_at),
-                    _timestamp(end_time),
-                ),
-            ).fetchall()
+            for start in range(0, len(event_row_ids), 500):
+                batch = event_row_ids[start:start + 500]
+                placeholders = ",".join("?" for _ in batch)
+                rows.extend(
+                    connection.execute(
+                        f"""
+                        SELECT id, timestamp, source, event_id, action, application, details
+                        FROM events
+                        WHERE id IN ({placeholders})
+                        ORDER BY id
+                        """,
+                        batch,
+                    ).fetchall()
+                )
         return [dict(row) for row in rows]
 
     def _session_assessments(
-        self, end_time: datetime
+        self, assessment_row_ids: list[int] | None = None
     ) -> list[dict[str, Any]]:
+        assessment_row_ids = (
+            self._associated_row_ids("assessment")
+            if assessment_row_ids is None
+            else assessment_row_ids
+        )
+        if not assessment_row_ids:
+            return []
+        rows: list[sqlite3.Row] = []
         with _read_connection(self.risk_db_path) as connection:
             connection.row_factory = sqlite3.Row
-            rows = connection.execute(
-                """
-                SELECT id, timestamp, risk_level, risk_score, activity_type,
-                       trigger_event_id, trigger_event_source, trigger_application,
-                       trigger_details, rule_id, rule_name, evidence_summary,
-                       alert_message
-                FROM risk_assessments
-                WHERE id > ? AND timestamp >= ? AND timestamp <= ?
-                  AND (trigger_event_id IS NOT NULL OR rule_id IS NOT NULL)
-                ORDER BY id
-                """,
-                (
-                    self.initial_assessment_id,
-                    _timestamp(self.started_at),
-                    _timestamp(end_time),
-                ),
-            ).fetchall()
+            for start in range(0, len(assessment_row_ids), 500):
+                batch = assessment_row_ids[start:start + 500]
+                placeholders = ",".join("?" for _ in batch)
+                rows.extend(
+                    connection.execute(
+                        f"""
+                        SELECT id, timestamp, risk_level, risk_score, activity_type,
+                               trigger_event_id, trigger_event_source, trigger_application,
+                               trigger_details, rule_id, rule_name, evidence_summary,
+                               alert_message
+                        FROM risk_assessments
+                        WHERE id IN ({placeholders})
+                          AND (trigger_event_id IS NOT NULL OR rule_id IS NOT NULL)
+                        ORDER BY id
+                        """,
+                        batch,
+                    ).fetchall()
+                )
         return [dict(row) for row in rows]
 
     def _session_evidence(
@@ -210,7 +362,7 @@ class ForensicSession:
             connection.row_factory = sqlite3.Row
             rows = connection.execute(
                 f"""
-                SELECT risk_id, evidence_text, event_id, event_source, details,
+                SELECT id, risk_id, evidence_text, event_id, event_source, details,
                        file_path, source_path, destination_path, usb_device
                 FROM risk_evidence
                 WHERE risk_id IN ({placeholders})
@@ -229,22 +381,27 @@ class ForensicSession:
         events: list[dict[str, Any]],
         assessments: list[dict[str, Any]],
         evidence: dict[int, list[dict[str, Any]]],
+        report_id: str | None = None,
     ) -> dict[str, Any]:
         categories = Counter(_event_category(event) for event in events)
         scores = [
-            (int(row["risk_score"]), _risk_level(row["risk_level"]))
+            (
+                int(row["risk_score"]),
+                _risk_level(row["risk_level"]),
+                row,
+            )
             for row in assessments
             if row.get("risk_score") is not None
         ]
-        highest_score, risk_level = max(
+        highest_score, risk_level, highest_assessment = max(
             scores,
             key=lambda item: (item[0], _severity_rank(item[1])),
-            default=(0, "LOW"),
+            default=(0, "LOW", None),
         )
         distinct_rules = {
-            row.get("rule_id") or row.get("rule_name")
+            _official_rule_name(row)
             for row in assessments
-            if row.get("rule_id") is not None or row.get("rule_name")
+            if row.get("rule_id") is not None
         }
         unassociated_events = [
             event
@@ -254,24 +411,40 @@ class ForensicSession:
                 for assessment in assessments
             )
         ]
-        normal_categories = Counter(
-            _event_category(event) for event in unassociated_events
+        normal_activity_counts = _activity_counts(unassociated_events)
+        activity_counts = _activity_counts(events)
+        risk_level_counts = Counter(
+            _risk_level(row.get("risk_level")) for row in assessments
         )
         return {
+            "report_id": report_id or uuid.uuid4().hex,
             "session_id": self.session_id,
             "user_id": self.user_id,
+            "user_email": self.user_email,
             "started_at": self.started_at,
             "ended_at": end_time,
             "events": events,
             "assessments": assessments,
             "evidence": evidence,
             "categories": categories,
+            "activity_counts": activity_counts,
             "risk_score": highest_score,
             "risk_level": risk_level,
+            "risk_level_counts": risk_level_counts,
+            "highest_assessment": highest_assessment,
             "distinct_rules": distinct_rules,
-            "timeline": _timeline(events, assessments, evidence),
+            "key_findings": _key_findings(assessments, activity_counts),
+            "recommendations": _recommendations(risk_level, assessments),
+            "timeline": _timeline(
+                events,
+                assessments,
+                evidence,
+                self.started_at,
+                end_time,
+            ),
             "normal_summary": _normal_activity_summary(
-                normal_categories, len(unassociated_events)
+                len(unassociated_events),
+                normal_activity_counts,
             ),
             "analysis": _analysis(assessments, events, risk_level),
             "conclusion": _final_assessment(risk_level, assessments),
@@ -367,7 +540,11 @@ class ForensicSession:
         story: list[Any] = [
             Paragraph("ForensicGuard", styles["FGTitle"]),
             Paragraph("Digital Forensics &amp; Security Monitoring", styles["FGBody"]),
-            Paragraph("Session Forensic Report", styles["FGSection"]),
+            Paragraph("Forensic Monitoring Session Report", styles["FGSection"]),
+            Paragraph(
+                f"Report ID: {_pdf_text(data['report_id'])}",
+                styles["FGBody"],
+            ),
             Paragraph(
                 f"Report generated: {_pdf_text(_timestamp(data['ended_at']))}",
                 styles["FGBody"],
@@ -376,7 +553,8 @@ class ForensicSession:
             _table(
                 [
                     ["Session ID", data["session_id"]],
-                    ["User identifier", data["user_id"] or "Not available"],
+                    ["Authenticated user ID", data["user_id"] or "Not available"],
+                    ["Authenticated email", data["user_email"] or "Not available"],
                     ["Login time", _timestamp(data["started_at"])],
                     ["Report/logout time", _timestamp(data["ended_at"])],
                     ["Duration", _duration(data["started_at"], data["ended_at"])],
@@ -388,10 +566,15 @@ class ForensicSession:
             _table(
                 [
                     ["Total events", str(len(data["events"]))],
-                    ["File activity", str(data["categories"]["file"])],
-                    ["USB activity", str(data["categories"]["usb"])],
-                    ["Security events", str(data["categories"]["security"])],
-                    ["Other monitored activity", str(data["categories"]["other"])],
+                    ["File Created", str(data["activity_counts"]["file_created"])],
+                    ["File Modified", str(data["activity_counts"]["file_modified"])],
+                    ["File Deleted", str(data["activity_counts"]["file_deleted"])],
+                    ["File Renamed", str(data["activity_counts"]["file_renamed"])],
+                    ["File Moved", str(data["activity_counts"]["file_moved"])],
+                    ["USB/removable activity", str(data["activity_counts"]["usb"])],
+                    ["File-transfer activity", str(data["activity_counts"]["file_transfer"])],
+                    ["Security events", str(data["activity_counts"]["security"])],
+                    ["Other monitored events", str(data["activity_counts"]["other"])],
                 ],
                 widths=[75 * mm, 35 * mm],
                 font_size=7,
@@ -407,8 +590,16 @@ class ForensicSession:
                     ["Session risk score", f"{data['risk_score']} / 100"],
                     ["Risk level", data["risk_level"]],
                     ["Rule-tagged/triggered assessments", str(len(data["assessments"]))],
+                    ["LOW assessments", str(data["risk_level_counts"]["LOW"])],
+                    ["MEDIUM assessments", str(data["risk_level_counts"]["MEDIUM"])],
+                    ["HIGH assessments", str(data["risk_level_counts"]["HIGH"])],
+                    ["CRITICAL assessments", str(data["risk_level_counts"]["CRITICAL"])],
                     ["Distinct rules triggered", str(len(data["distinct_rules"]))],
                     ["Highest assessment score", f"{data['risk_score']} / 100"],
+                    [
+                        "Highest-risk activity",
+                        _highest_activity_label(data["highest_assessment"]),
+                    ],
                 ],
                 widths=[75 * mm, 35 * mm],
                 font_size=7,
@@ -426,6 +617,8 @@ class ForensicSession:
                     if assessment.get("rule_id") is not None
                     else str(assessment.get("activity_type") or "Triggered assessment")
                 )
+                if assessment.get("rule_id") is not None:
+                    rule = _official_rule_name(assessment)
                 details = assessment.get("trigger_details") or assessment.get("evidence_summary")
                 detail_evidence = data["evidence"].get(int(assessment["id"]), [])
                 if detail_evidence:
@@ -466,6 +659,57 @@ class ForensicSession:
                 )
             )
 
+        evidence_rows = [[
+            "Evidence ID",
+            "Timestamp",
+            "Rule / event / source",
+            "Observed evidence",
+        ]]
+        for assessment in data["assessments"]:
+            rule_name = _official_rule_name(assessment)
+            rows = data["evidence"].get(int(assessment["id"]), [])
+            for item in rows[:5]:
+                evidence_details = " | ".join(
+                    value
+                    for value in (
+                        _bounded_text(item.get("evidence_text"), 140),
+                        _bounded_text(item.get("details"), 120),
+                        _bounded_text(item.get("file_path"), 120),
+                        _bounded_text(item.get("source_path"), 120),
+                        _bounded_text(item.get("destination_path"), 120),
+                        _bounded_text(item.get("usb_device"), 80),
+                    )
+                    if value
+                )
+                evidence_rows.append(
+                    [
+                        str(item["id"]),
+                        _timestamp_from_db(assessment.get("timestamp")),
+                        (
+                            f"{rule_name} / "
+                            f"{item.get('event_id') or 'event unknown'} "
+                            f"({item.get('event_source') or 'source unknown'})"
+                        ),
+                        evidence_details or "No additional evidence detail stored.",
+                    ]
+                )
+        story.append(Paragraph("Forensic Evidence Summary", styles["FGSection"]))
+        if len(evidence_rows) == 1:
+            story.append(
+                Paragraph(
+                    "No separate evidence rows are stored for these session assessments.",
+                    styles["FGBody"],
+                )
+            )
+        else:
+            story.append(
+                _table(
+                    evidence_rows,
+                    widths=[18 * mm, 27 * mm, 51 * mm, 88 * mm],
+                    font_size=6,
+                )
+            )
+
         story.extend(
             [
                 Paragraph("Normal Activity Summary", styles["FGSection"]),
@@ -496,7 +740,7 @@ class ForensicSession:
         story.extend(
             [
                 Paragraph(
-                    "AI-Assisted / Rule-Based Forensic Analysis",
+                    "Forensic Analytical Summary",
                     styles["FGSection"],
                 ),
                 Paragraph(_pdf_text(data["analysis"]), styles["FGBody"]),
@@ -507,6 +751,16 @@ class ForensicSession:
                     styles["FGBody"],
                 ),
                 Paragraph(_pdf_text(data["conclusion"]), styles["FGBody"]),
+                Paragraph("Key Findings", styles["FGSection"]),
+                *[
+                    Paragraph(f"• {_pdf_text(item)}", styles["FGBody"])
+                    for item in data["key_findings"]
+                ],
+                Paragraph("Recommended Actions", styles["FGSection"]),
+                *[
+                    Paragraph(f"• {_pdf_text(item)}", styles["FGBody"])
+                    for item in data["recommendations"]
+                ],
                 Paragraph(
                     "Generated by ForensicGuard | Session "
                     f"{_pdf_text(data['session_id'])} | "
@@ -517,7 +771,11 @@ class ForensicSession:
                 ),
             ]
         )
-        document.build(story)
+        document.build(
+            story,
+            onFirstPage=lambda canvas, doc: _draw_page_footer(canvas, doc, data),
+            onLaterPages=lambda canvas, doc: _draw_page_footer(canvas, doc, data),
+        )
 
 
 def _table(rows: list[list[Any]], widths: list[float], font_size: float) -> Table:
@@ -594,29 +852,126 @@ def _event_matches_assessment(
     trigger_id = str(assessment.get("trigger_event_id") or "").casefold()
     source = str(event.get("source") or "").casefold()
     trigger_source = str(assessment.get("trigger_event_source") or "").casefold()
+    event_application = str(event.get("application") or "").strip().casefold()
+    trigger_application = str(
+        assessment.get("trigger_application") or ""
+    ).strip().casefold()
+    event_time = _parse_timestamp(event.get("timestamp"))
+    assessment_time = _parse_timestamp(assessment.get("timestamp"))
+    within_trigger_window = (
+        event_time is not None
+        and assessment_time is not None
+        and abs((event_time - assessment_time).total_seconds()) <= 2
+    )
     return bool(
         event_id
         and trigger_id
         and event_id == trigger_id
         and (not trigger_source or trigger_source == source)
+        and (not trigger_application or trigger_application == event_application)
+        and within_trigger_window
     )
+
+
+def _activity_counts(events: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {
+        "file_created": 0,
+        "file_modified": 0,
+        "file_deleted": 0,
+        "file_renamed": 0,
+        "file_moved": 0,
+        "usb": 0,
+        "file_transfer": 0,
+        "security": 0,
+        "other": 0,
+        "total": len(events),
+    }
+    for event in events:
+        event_id = str(event.get("event_id") or "").upper()
+        action = str(event.get("action") or "").casefold()
+        source = str(event.get("source") or "").casefold()
+        if event_id == "FILE_CREATE":
+            counts["file_created"] += 1
+        elif event_id == "FILE_MODIFY":
+            counts["file_modified"] += 1
+        elif event_id == "FILE_DELETE":
+            counts["file_deleted"] += 1
+        elif event_id in {"FILE_RENAME", "FILE_MOVED", "FILE_MOVE"}:
+            if event_id in {"FILE_MOVED", "FILE_MOVE"} or "moved" in action:
+                counts["file_moved"] += 1
+            else:
+                counts["file_renamed"] += 1
+        elif event_id == "FILE_COPY" or "file copied" in action:
+            counts["file_transfer"] += 1
+        elif "transfer" in event_id or "transfer" in action:
+            counts["file_transfer"] += 1
+
+        if event_id.startswith("USB") or "removable" in source:
+            counts["usb"] += 1
+        if "security" in source or event_id.startswith(("46", "47")):
+            counts["security"] += 1
+        elif not (
+            event_id.startswith(("FILE_", "FOLDER_"))
+            or event_id.startswith("USB")
+            or "transfer" in event_id
+            or "file copied" in action
+        ):
+            counts["other"] += 1
+    return counts
+
+
+def _official_rule_name(assessment: dict[str, Any]) -> str:
+    rule_id = assessment.get("rule_id")
+    if rule_id is not None:
+        try:
+            rule = get_rule(int(rule_id))
+        except (TypeError, ValueError):
+            rule = None
+        if rule is not None:
+            return rule.rule_name
+        return f"Rule {rule_id} (not in official registry)"
+    return "Triggered assessment (no rule ID)"
+
+
+def _parse_timestamp(value: Any) -> datetime | None:
+    if not value:
+        return None
+    text = str(value).strip()
+    for pattern in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m-%dT%H:%M:%S%z"):
+        try:
+            return datetime.strptime(text, pattern)
+        except ValueError:
+            continue
+    return None
 
 
 def _normal_activity_summary(
-    categories: Counter[str], observed: int
+    observed: int,
+    activity_counts: dict[str, int],
 ) -> str:
     if not observed:
         return (
-            "No session events remained after correlating events with triggered "
-            "risk assessments; this does not classify unobserved activity."
+            "No session event could be classified as unassociated with a "
+            "triggered assessment from the stored correlation fields. This "
+            "does not classify unobserved activity."
         )
     counts = ", ".join(
-        f"{categories[label]} {label} event(s)"
-        for label in ("file", "usb", "security", "other")
-        if categories[label]
+        f"{activity_counts[key]} {label}"
+        for key, label in (
+            ("file_created", "file created"),
+            ("file_modified", "file modified"),
+            ("file_deleted", "file deleted"),
+            ("file_renamed", "file renamed"),
+            ("file_moved", "file moved"),
+            ("file_transfer", "file transfer"),
+            ("usb", "USB/removable"),
+            ("security", "security"),
+            ("other", "other"),
+        )
+        if activity_counts[key]
     )
     return (
-        f"{observed} observed event(s) were not matched to a triggered risk "
+        f"{observed} observed event(s) had no matching stored triggered risk "
         f"assessment: "
         f"{counts}. These counts describe telemetry and do not certify the "
         f"activity as safe."
@@ -627,14 +982,27 @@ def _timeline(
     events: list[dict[str, Any]],
     assessments: list[dict[str, Any]],
     evidence: dict[int, list[dict[str, Any]]],
+    started_at: datetime,
+    ended_at: datetime,
 ) -> list[dict[str, str]]:
-    items: list[dict[str, str]] = []
+    items: list[dict[str, Any]] = [
+        {
+            "timestamp": _timestamp(started_at),
+            "kind": "SESSION START",
+            "description": "Monitoring session started.",
+            "priority": 0,
+            "risk_score": 0,
+        },
+        {
+            "timestamp": _timestamp(ended_at),
+            "kind": "REPORT GENERATED",
+            "description": "Session report generated.",
+            "priority": 0,
+            "risk_score": 0,
+        },
+    ]
     for assessment in assessments:
-        rule_label = (
-            f"Rule {assessment['rule_id']}: {assessment['rule_name']}"
-            if assessment.get("rule_id") is not None
-            else str(assessment.get("activity_type") or "Risk assessment")
-        )
+        rule_label = _official_rule_name(assessment)
         details = assessment.get("trigger_details") or assessment.get("evidence_summary")
         if not details:
             rows = evidence.get(int(assessment["id"]), [])
@@ -648,7 +1016,8 @@ def _timeline(
                     f"({assessment.get('risk_score')}/100): {details}",
                     220,
                 ),
-                "priority": "0",
+                "priority": 0,
+                "risk_score": int(assessment.get("risk_score") or 0),
             }
         )
 
@@ -678,7 +1047,8 @@ def _timeline(
                     ),
                     220,
                 ),
-                "priority": "1",
+                "priority": 0,
+                "risk_score": 0,
             }
         )
 
@@ -696,14 +1066,27 @@ def _timeline(
                     f"{len(file_events)} observed file/folder event(s); {description}",
                     220,
                 ),
-                "priority": "2",
+                "priority": 2,
+                "risk_score": 0,
             }
         )
 
-    items.sort(key=lambda item: (item["priority"], item["timestamp"]))
+    items.sort(
+        key=lambda item: (
+            item["priority"],
+            -item["risk_score"],
+            item["timestamp"],
+        )
+    )
+    selected = items[:MAX_TIMELINE_ITEMS]
+    selected.sort(key=lambda item: (item["timestamp"], item["kind"]))
     return [
-        {key: value for key, value in item.items() if key != "priority"}
-        for item in items[:MAX_TIMELINE_ITEMS]
+        {
+            key: value
+            for key, value in item.items()
+            if key not in {"priority", "risk_score"}
+        }
+        for item in selected
     ]
 
 
@@ -712,16 +1095,37 @@ def _analysis(
     events: list[dict[str, Any]],
     risk_level: str,
 ) -> str:
+    counts = _activity_counts(events)
+    activity_summary = ", ".join(
+        f"{counts[key]} {label}"
+        for key, label in (
+            ("file_created", "file creation"),
+            ("file_modified", "file modification"),
+            ("file_deleted", "file deletion"),
+            ("file_renamed", "file rename"),
+            ("file_moved", "file move"),
+            ("file_transfer", "file transfer"),
+            ("usb", "USB/removable"),
+            ("security", "security"),
+        )
+        if counts[key]
+    )
+    observed_text = (
+        f"Observed event counts include {activity_summary}."
+        if activity_summary
+        else "No categorized file, transfer, USB, or security event was recorded."
+    )
     if not assessments:
         return (
             f"The session contains {len(events)} recorded event(s), and no "
             "supported suspicious rule was triggered in the session-scoped risk "
-            "assessments. This is not a guarantee that all activity was safe. "
+            f"assessments. {observed_text} This is not a guarantee that all "
+            "activity was safe. "
             "Review the observed events if they require operational context."
         )
 
     rules = Counter(
-        f"Rule {row['rule_id']}: {row['rule_name']}"
+        _official_rule_name(row)
         for row in assessments
         if row.get("rule_id") is not None
     )
@@ -731,10 +1135,22 @@ def _analysis(
         f"The session contains {len(events)} recorded event(s) and "
         f"{len(assessments)} qualifying triggered assessment(s) across "
         f"{distinct} distinct rule(s). The highest stored session risk level is "
-        f"{risk_level}."
+        f"{risk_level}. {observed_text}"
     )
     if top_rules:
         text += f" The most frequently represented detected rule(s): {top_rules}."
+        explanations = []
+        for assessment in assessments:
+            rule_id = assessment.get("rule_id")
+            if rule_id is None:
+                continue
+            rule = get_rule(int(rule_id))
+            if rule is not None and rule.short_description not in explanations:
+                explanations.append(rule.short_description)
+            if len(explanations) == 3:
+                break
+        if explanations:
+            text += " Registry descriptions: " + " ".join(explanations)
     rule_names = " ".join(rules).lower()
     correlations = []
     if any(token in rule_names for token in ("transfer", "external", "upload", "usb")):
@@ -743,6 +1159,44 @@ def _analysis(
         correlations.append("high-volume file/folder or rename indicators were recorded")
     if correlations:
         text += " Observed correlations: " + "; ".join(correlations) + "."
+    rule_ids = {
+        int(row["rule_id"])
+        for row in assessments
+        if row.get("rule_id") is not None
+    }
+    rule_times = [
+        _parse_timestamp(row.get("timestamp"))
+        for row in assessments
+        if row.get("rule_id") is not None
+    ]
+    rule_times = [value for value in rule_times if value is not None]
+    temporally_correlated = (
+        len(rule_ids) > 1
+        and any(
+            abs((left - right).total_seconds()) <= 10 * 60
+            for index, left in enumerate(rule_times)
+            for right in rule_times[index + 1:]
+        )
+    )
+    if len(rule_ids) > 1:
+        if temporally_correlated:
+            text += (
+                " Distinct rule detections fall within a 10-minute window; "
+                "this is temporal correlation, not proof of causation."
+            )
+        else:
+            text += (
+                " No supported cross-rule temporal correlation was identified."
+            )
+    else:
+        text += (
+            " The stored session data does not support a multi-rule correlation."
+        )
+    if len(assessments) > distinct:
+        text += (
+            f" There were {len(assessments)} triggered assessment row(s), "
+            f"including repeated detections of some rule(s)."
+        )
     text += (
         " These statements are limited to stored session telemetry and rule "
         "evidence; investigate the cited records and source files before taking "
@@ -765,3 +1219,70 @@ def _final_assessment(level: str, assessments: list[dict[str, Any]]) -> str:
             "that the system is completely safe."
         )
     return recommendations.get(level, "Review the available session evidence.")
+
+
+def _highest_activity_label(assessment: dict[str, Any] | None) -> str:
+    if assessment is None:
+        return "No qualifying risk assessment stored"
+    rule_id = assessment.get("rule_id")
+    if rule_id is not None:
+        return _official_rule_name(assessment)
+    return str(assessment.get("activity_type") or "Triggered risk assessment")
+
+
+def _key_findings(
+    assessments: list[dict[str, Any]], activity_counts: dict[str, int]
+) -> list[str]:
+    findings = [
+        f"{activity_counts['total']} monitored event(s) were recorded during the session."
+    ]
+    if not assessments:
+        findings.append("No session-scoped triggered risk assessment was stored.")
+        return findings
+    findings.append(
+        f"{len(assessments)} triggered assessment(s) were stored at "
+        f"the corresponding rule/event level."
+    )
+    rule_names = sorted(
+        {
+            _official_rule_name(row)
+            for row in assessments
+            if row.get("rule_id") is not None
+        }
+    )
+    if rule_names:
+        findings.append("Detected rule(s): " + "; ".join(rule_names[:5]) + ".")
+    return findings
+
+
+def _recommendations(
+    risk_level: str, assessments: list[dict[str, Any]]
+) -> list[str]:
+    if not assessments:
+        return [
+            "No rule-based assessment requires escalation from this report; review observed telemetry when additional context is needed."
+        ]
+    actions = {
+        "LOW": "Retain the report and review any events requiring additional context.",
+        "MEDIUM": "Review the cited rule detections and their associated evidence.",
+        "HIGH": "Investigate the high-risk indicators and preserve related evidence.",
+        "CRITICAL": "Prioritize incident response and preserve relevant evidence.",
+    }
+    return [actions.get(risk_level, "Review the available session evidence.")]
+
+
+def _draw_page_footer(canvas: Any, document: Any, data: dict[str, Any]) -> None:
+    canvas.saveState()
+    canvas.setFont("Helvetica", 6)
+    canvas.setFillColor(colors.HexColor("#52606d"))
+    canvas.drawString(
+        document.leftMargin,
+        6 * mm,
+        f"ForensicGuard | Report {data['report_id']}",
+    )
+    canvas.drawRightString(
+        A4[0] - document.rightMargin,
+        6 * mm,
+        f"{_timestamp(data['ended_at'])} | Page {document.page}",
+    )
+    canvas.restoreState()

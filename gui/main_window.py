@@ -1,11 +1,13 @@
 import csv
-from datetime import datetime
+import shutil
+from pathlib import Path
 
 from alerts.alert_manager import AlertManager
 from database.database import get_all_events
 from detection.risk_engine import assess_risk
 
-from PySide6.QtCore import Qt, QTimer, Signal
+from PySide6.QtCore import Qt, QTimer, Signal, QUrl
+from PySide6.QtGui import QDesktopServices
 
 from PySide6.QtWidgets import (
     QHBoxLayout,
@@ -122,6 +124,7 @@ class MainWindow(QMainWindow):
         self.alert_manager = AlertManager()
         self.current_user = current_user
         self.forensic_session = ForensicSession.start(current_user)
+        self._session_finalized = False
 
         self.build_ui()
 
@@ -1322,31 +1325,94 @@ class MainWindow(QMainWindow):
         report_path = self._create_forensic_report()
         if report_path is None:
             return
-        QMessageBox.information(
-            self,
-            "Forensic report generated",
-            str(report_path),
-        )
+        self._offer_report_actions(report_path)
         try:
             sign_out()
         except Exception as error:
             QMessageBox.warning(self, "Logout failed", str(error))
             return
+        self.forensic_session.finish()
+        self._session_finalized = True
         self.logout_requested.emit()
 
     def _generate_forensic_report(self):
         report_path = self._create_forensic_report()
         if report_path is not None:
-            QMessageBox.information(
+            self._offer_report_actions(report_path)
+
+    def _offer_report_actions(self, report_path):
+        report_path = Path(report_path)
+        dialog = QMessageBox(self)
+        dialog.setIcon(QMessageBox.Icon.Information)
+        dialog.setWindowTitle("Forensic report generated")
+        dialog.setText("The forensic PDF was generated successfully.")
+        dialog.setInformativeText(
+            f"File: {report_path.name}\nSaved at: {report_path}"
+        )
+        open_button = dialog.addButton(
+            "Open Report", QMessageBox.ButtonRole.AcceptRole
+        )
+        save_button = dialog.addButton(
+            "Save/Download Report", QMessageBox.ButtonRole.ActionRole
+        )
+        dialog.addButton(QMessageBox.StandardButton.Close)
+        dialog.exec()
+
+        selected_button = dialog.clickedButton()
+        if selected_button == open_button:
+            self._open_report(report_path)
+        elif selected_button == save_button:
+            self._save_report_copy(report_path)
+
+    def _open_report(self, report_path):
+        report_path = Path(report_path)
+        if not report_path.is_file() or not QDesktopServices.openUrl(
+            QUrl.fromLocalFile(str(report_path))
+        ):
+            QMessageBox.warning(
                 self,
-                "Forensic report generated",
-                str(report_path),
+                "Could not open report",
+                f"The report remains saved at:\n{report_path}",
             )
 
-    def _create_forensic_report(self):
-        end_time = datetime.now().astimezone()
+    def _save_report_copy(self, report_path):
+        report_path = Path(report_path)
+        destination, _ = QFileDialog.getSaveFileName(
+            self,
+            "Save forensic report",
+            str(report_path.name),
+            "PDF files (*.pdf)",
+        )
+        if not destination:
+            return
+
+        destination_path = Path(destination)
         try:
-            return self.forensic_session.generate_report(end_time)
+            if destination_path.resolve() != report_path.resolve():
+                shutil.copy2(report_path, destination_path)
+            if (
+                not destination_path.is_file()
+                or destination_path.stat().st_size != report_path.stat().st_size
+            ):
+                raise OSError("The saved PDF copy could not be verified.")
+        except OSError as error:
+            QMessageBox.warning(
+                self,
+                "Could not save report copy",
+                f"The original report remains at:\n{report_path}\n\n{error}",
+            )
+            return
+
+        QMessageBox.information(
+            self,
+            "Report copy saved",
+            f"Copy saved to:\n{destination_path}\n\n"
+            f"The original remains at:\n{report_path}",
+        )
+
+    def _create_forensic_report(self):
+        try:
+            return self.forensic_session.generate_report()
         except Exception as error:
             QMessageBox.critical(
                 self,
@@ -1356,6 +1422,20 @@ class MainWindow(QMainWindow):
             return None
 
     def closeEvent(self, event):
+        if not self._session_finalized:
+            report_path = self._create_forensic_report()
+            if report_path is None:
+                event.ignore()
+                return
+            self._offer_open_report(report_path)
+            try:
+                sign_out()
+                self.forensic_session.finish()
+                self._session_finalized = True
+            except Exception as error:
+                QMessageBox.warning(self, "Logout failed", str(error))
+                event.ignore()
+                return
 
         try:
 

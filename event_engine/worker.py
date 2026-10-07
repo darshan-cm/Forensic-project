@@ -1,4 +1,4 @@
-from event_engine.engine import consume
+from event_engine.engine import consume, event_queue
 
 
 def event_worker():
@@ -9,10 +9,8 @@ def event_worker():
     from detection.event_risk_handler import assess_event
 
     while True:
-
+        event = consume()
         try:
-            event = consume()
-            
             # Process event for risk assessment (events from monitors)
             if isinstance(event, dict):
                 # Assess risk for this event if it's a trigger type
@@ -23,4 +21,5 @@ def event_worker():
         
         except Exception as error:
             print(f"[Event Engine] Worker error: {error}")
-            continue
+        finally:
+            event_queue.task_done()

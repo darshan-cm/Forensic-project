@@ -41,7 +41,13 @@ class RulesFourAndFiveTests(unittest.TestCase):
 
     @staticmethod
     def _timestamp(seconds_ago=0):
-        return (datetime.now() - timedelta(seconds=seconds_ago)).strftime(
+        test_time = datetime.now().replace(
+            hour=12,
+            minute=0,
+            second=0,
+            microsecond=0,
+        )
+        return (test_time - timedelta(seconds=seconds_ago)).strftime(
             "%Y-%m-%d %H:%M:%S"
         )
 
