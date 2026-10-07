@@ -137,6 +137,14 @@ def get_file_information(files):
         try:
 
             path = os.path.abspath(path)
+            filename = os.path.basename(path).casefold()
+            extension = Path(path).suffix.casefold()
+            if (
+                filename in {"forensic.db", "riskalert.db"}
+                or filename.endswith(("-wal", "-shm", "-journal"))
+                or extension in {".db", ".sqlite", ".sqlite3"}
+            ):
+                continue
 
             result.append({
                 "source_path": path,
@@ -376,6 +384,8 @@ def record_file_copy(files):
 
         f"TotalSize="
         f"{total_size} bytes | "
+
+        f"FileSizes={','.join(str(item['file_size']) for item in information)} | "
 
         f"Files="
         +

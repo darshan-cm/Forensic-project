@@ -1,9 +1,11 @@
 import csv
+from datetime import datetime
 
+from alerts.alert_manager import AlertManager
 from database.database import get_all_events
 from detection.risk_engine import assess_risk
 
-from PySide6.QtCore import Qt, QTimer
+from PySide6.QtCore import Qt, QTimer, Signal
 
 from PySide6.QtWidgets import (
     QHBoxLayout,
@@ -23,6 +25,8 @@ from PySide6.QtWidgets import (
 )
 
 from gui.controller import MonitorController
+from reports.forensic_report import ForensicSession
+from supabase.auth import sign_out
 
 
 # ============================================================
@@ -99,7 +103,9 @@ class StatCard(QFrame):
 
 class MainWindow(QMainWindow):
 
-    def __init__(self):
+    logout_requested = Signal()
+
+    def __init__(self, current_user=None):
 
         super().__init__()
 
@@ -113,6 +119,9 @@ class MainWindow(QMainWindow):
         )
 
         self.controller = MonitorController()
+        self.alert_manager = AlertManager()
+        self.current_user = current_user
+        self.forensic_session = ForensicSession.start(current_user)
 
         self.build_ui()
 
@@ -234,6 +243,14 @@ class MainWindow(QMainWindow):
         header.addWidget(
             self.status
         )
+
+        self.report_button = QPushButton("Generate Forensic Report")
+        self.report_button.clicked.connect(self._generate_forensic_report)
+        header.addWidget(self.report_button)
+
+        self.logout_button = QPushButton("Generate Report & Logout")
+        self.logout_button.clicked.connect(self._logout)
+        header.addWidget(self.logout_button)
 
 
         main_layout.addLayout(
@@ -1059,7 +1076,6 @@ class MainWindow(QMainWindow):
                 "LOW"
             )
 
-
             score = result.get(
                 "score",
                 0
@@ -1301,6 +1317,43 @@ class MainWindow(QMainWindow):
     # ========================================================
     # CLOSE
     # ========================================================
+
+    def _logout(self):
+        report_path = self._create_forensic_report()
+        if report_path is None:
+            return
+        QMessageBox.information(
+            self,
+            "Forensic report generated",
+            str(report_path),
+        )
+        try:
+            sign_out()
+        except Exception as error:
+            QMessageBox.warning(self, "Logout failed", str(error))
+            return
+        self.logout_requested.emit()
+
+    def _generate_forensic_report(self):
+        report_path = self._create_forensic_report()
+        if report_path is not None:
+            QMessageBox.information(
+                self,
+                "Forensic report generated",
+                str(report_path),
+            )
+
+    def _create_forensic_report(self):
+        end_time = datetime.now().astimezone()
+        try:
+            return self.forensic_session.generate_report(end_time)
+        except Exception as error:
+            QMessageBox.critical(
+                self,
+                "Forensic report failed",
+                f"The report could not be generated. You remain signed in.\n{error}",
+            )
+            return None
 
     def closeEvent(self, event):
 

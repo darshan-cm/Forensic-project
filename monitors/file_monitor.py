@@ -1,5 +1,6 @@
 from fileinput import filename
 import os
+import stat
 import time
 from pathlib import Path
 from watchdog.observers import Observer
@@ -34,6 +35,15 @@ IGNORE_EXTENSIONS = {
     ".pyd",
     ".cache",
     ".lnk",
+    ".db",
+    ".sqlite",
+    ".sqlite3",
+    ".db-wal",
+    ".db-shm",
+    ".db-journal",
+    ".sqlite-wal",
+    ".sqlite-shm",
+    ".sqlite-journal",
 }
 
 # Used to suppress duplicate events
@@ -104,13 +114,27 @@ class FileMonitorHandler(FileSystemEventHandler):
     def on_created(self, event):
 
         if event.is_directory:
+            self.handle(
+                "FOLDER_CREATE",
+                "Folder Created",
+                event.src_path,
+                "Directory created"
+            )
             return
+
+        details = "User created a file"
+        try:
+            file_attributes = os.stat(event.src_path).st_file_attributes
+            if file_attributes & getattr(stat, "FILE_ATTRIBUTE_HIDDEN", 0x2):
+                details += " | Hidden=True"
+        except (AttributeError, OSError):
+            pass
 
         self.handle(
             "FILE_CREATE",
             "File Created",
             event.src_path,
-            "User created a file"
+            details
         )
 
     def on_modified(self, event):
@@ -128,6 +152,12 @@ class FileMonitorHandler(FileSystemEventHandler):
     def on_deleted(self, event):
 
         if event.is_directory:
+            self.handle(
+                "FOLDER_DELETE",
+                "Folder Deleted",
+                event.src_path,
+                "Directory deleted"
+            )
             return
 
         self.handle(

@@ -1,13 +1,26 @@
 from event_engine.engine import consume
-from utils.logger import log_event
 
 
 def event_worker():
 
     print("[Event Engine] Started...")
 
+    # Import risk handler after starting to avoid circular imports
+    from detection.event_risk_handler import assess_event
+
     while True:
 
-        event = consume()
-
-        log_event(event)
+        try:
+            event = consume()
+            
+            # Process event for risk assessment (events from monitors)
+            if isinstance(event, dict):
+                # Assess risk for this event if it's a trigger type
+                assess_event(event)
+            else:
+                # Legacy support for non-dict events
+                pass
+        
+        except Exception as error:
+            print(f"[Event Engine] Worker error: {error}")
+            continue

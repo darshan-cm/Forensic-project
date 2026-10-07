@@ -216,6 +216,16 @@ python gui_test.py
 
 The dashboard provides visualization of collected forensic activity.
 
+## Session Forensic Reports
+
+After an authenticated sign-in, the dashboard starts a session-scoped report
+window. Use **Generate Forensic Report** to save a compact offline PDF without
+signing out, or **Generate Report & Logout** to generate and verify the PDF
+before signing out. Reports are saved under `reports/` and summarize only
+telemetry recorded during that session. The AI-assisted analysis is
+rule-based and grounded in the existing event, risk-assessment, and evidence
+records; no external AI service is required.
+
 🧠 Run the Risk Engine
 
 To independently run the forensic risk assessment:

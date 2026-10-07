@@ -1,0 +1,1 @@
+"""Authentication UI for ForensicGuard."""

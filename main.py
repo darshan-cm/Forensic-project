@@ -1,5 +1,10 @@
 from threading import Thread
 import time
+from pathlib import Path
+
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 from monitors.security_monitor import security_monitor
 from database.database import initialize_database
@@ -9,6 +14,7 @@ from monitors.active_window import active_window_monitor
 from event_engine.worker import event_worker
 from monitors.file_transfer_monitor import file_transfer_monitor
 from monitors.usb_monitor import usb_monitor
+from gui.app import start_gui
 
 
 print("=" * 70)
@@ -16,6 +22,16 @@ print("        FORENSICGUARD - REAL TIME MONITOR")
 print("=" * 70)
 
 initialize_database()
+
+
+# ============================================================
+# START EVENT ENGINE WORKER
+# ============================================================
+
+Thread(
+    target=event_worker,
+    daemon=True
+).start()
 
 
 # ============================================================
@@ -80,6 +96,7 @@ Thread(
 
 print("\nAll Monitors Started Successfully...\n")
 
+start_gui()
 
 # ============================================================
 # KEEP FORENSICGUARD RUNNING

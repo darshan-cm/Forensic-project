@@ -20,6 +20,7 @@ __pycache__/
 # Generated exports
 exports/*
 !exports/.gitkeep
+reports/*.pdf
 
 # IDE files
 .vscode/
